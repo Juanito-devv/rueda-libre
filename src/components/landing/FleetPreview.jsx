@@ -9,13 +9,6 @@ export default function FleetPreview() {
     ? vehicles.slice(0, 4) 
     : vehicles.filter(v => v.category === activeTab).slice(0, 4);
 
-    const vehicleEmojis = {
-  'camioneta': '🛻',
-  'sedan': '🚗',
-  'suv': '🚙', 
-  'van': '🚐',
-};
-
   const tabs = [
     { id: 'all', name: 'Todos' },
     { id: 'sedan', name: 'Eficientes' },
@@ -56,10 +49,12 @@ export default function FleetPreview() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredVehicles.map(vehicle => (
             <Link href={`/booking?id=${vehicle.id}`} key={vehicle.id} className="card p-6 group cursor-pointer block">
-              <div className="w-full h-40 bg-gradient-to-br from-brand-red/20 to-brand-darkred/20 rounded-xl mb-4 flex items-center justify-center text-6xl group-hover:scale-105 transition-transform">
-                {vehicle.category === 'camioneta' ? '🛻' : 
-                 vehicle.category === 'sedan' ? '🚗' : 
-                 vehicle.category === 'suv' ? '🚙' : '🚐'}
+              <div className="w-full h-40 rounded-xl mb-4 overflow-hidden">
+                <img 
+                  src={vehicle.image} 
+                  alt={vehicle.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                />
               </div>
               <h3 className="text-lg font-bold text-white mb-2">{vehicle.name}</h3>
               <p className="text-gray-400 text-sm mb-3">{vehicle.type}</p>

@@ -3,6 +3,7 @@ import Header from '../src/components/layout/Header';
 import Footer from '../src/components/layout/Footer';
 import { vehicles } from '../src/data/vehicles';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Catalog() {
   const [filters, setFilters] = useState({
@@ -23,13 +24,6 @@ export default function Catalog() {
     { id: 'camioneta', name: 'Camionetas' },
     { id: 'van', name: 'Vans' },
   ];
-
-  const vehicleEmojis = {
-    'camioneta': '🛻',
-    'sedan': '🚗',
-    'suv': '🚙',
-    'van': '🚐',
-  };
 
   return (
     <div className="min-h-screen bg-brand-charcoal">
@@ -67,8 +61,12 @@ export default function Catalog() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredVehicles.map(vehicle => (
               <Link href={`/booking?id=${vehicle.id}`} key={vehicle.id} className="card p-6 group cursor-pointer block">
-                <div className="w-full h-48 bg-gradient-to-br from-brand-red/20 to-brand-darkred/20 rounded-xl mb-4 flex items-center justify-center text-7xl group-hover:scale-105 transition-transform">
-                  {vehicleEmojis[vehicle.category] || '🚗'}
+                <div className="w-full h-48 rounded-xl mb-4 overflow-hidden">
+                  <img 
+                    src={vehicle.image} 
+                    alt={vehicle.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                  />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">{vehicle.name}</h3>
                 <p className="text-gray-400 mb-4">{vehicle.type}</p>
