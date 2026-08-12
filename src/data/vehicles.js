@@ -10,7 +10,7 @@ export const vehicles = [
     capacity: 5,
     cargo: "1,000 kg",
     dailyRate: 85,
-    image: "/images/vehicles/jac-aventura.jpg",
+    image: "/images/vehicles/jacaventura.jpg",
     features: ["A/C", "Bluetooth", "Cámara reversa", "Sensor de estacionamiento"],
     segment: ["empresa", "particular"],
     description: "Camioneta robusta ideal para trabajo pesado y aventuras. Perfecta para operaciones logísticas y viajes largos.",

@@ -9,6 +9,13 @@ export default function FleetPreview() {
     ? vehicles.slice(0, 4) 
     : vehicles.filter(v => v.category === activeTab).slice(0, 4);
 
+    const vehicleEmojis = {
+  'camioneta': '🛻',
+  'sedan': '🚗',
+  'suv': '🚙', 
+  'van': '🚐',
+};
+
   const tabs = [
     { id: 'all', name: 'Todos' },
     { id: 'sedan', name: 'Eficientes' },

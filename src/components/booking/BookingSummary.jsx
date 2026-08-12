@@ -2,12 +2,12 @@ import { Calendar, MapPin, Clock } from 'lucide-react';
 import { extras } from '../../data/vehicles';
 
 export default function BookingSummary({ vehicle, booking, total, onConfirm }) {
-  const vehicleEmojis = {
-    'camioneta': '🛻',
-    'sedan': '🚗',
-    'suv': '🚙',
-    'van': '🚐',
-  };
+const vehicleEmojis = {
+  'camioneta': '🛻',
+  'sedan': '🚗', 
+  'suv': '🚙',
+  'van': '🚐',
+};
 
   return (
     <div className="card p-8 sticky top-24">

@@ -46,7 +46,7 @@ export default function Booking() {
   
   const handleConfirmBooking = () => {
     const message = generateWhatsAppMessage(vehicle, booking, calculateTotal());
-    const phoneNumber = '584123456789'; // Tu número de WhatsApp
+    const phoneNumber = '584129706050'; // Tu número de WhatsApp
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
   
