@@ -9,23 +9,19 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
       return `- ${extra}`;
     })
     .join('\n');
-  
-  return `🚗 *NUEVA RESERVA - RUEDA LIBRE*
 
-👤 *Cliente:* ${booking.clientType === 'particular' ? 'Particular' : 'Empresa'}
-📝 *Nombre:* ${booking.name}
-📄 *Documento:* ${booking.document}
-📱 *Teléfono:* ${booking.phone}
-📧 *Correo:* ${booking.email}
-
-🚙 *Vehículo:* ${vehicle.name} (${vehicle.type})
-📅 *Recogida:* ${booking.pickupDate}
-📅 *Devolución:* ${booking.returnDate}
-⏱ *Días:* ${booking.days}
-📍 *Ubicación:* ${booking.location}
-
-${extrasList ? '✨ *Extras:*\n' + extrasList + '\n' : ''}
-💰 *TOTAL ESTIMADO:* $${total}
-
-Por favor, confirma la disponibilidad y coordina la entrega. ¡Gracias!`;
+  return `🚗 *NUEVA RESERVA - RUEDA LIBRE*\n\n` +
+    `👤 *Cliente:* ${booking.clientType === 'particular' ? 'Particular' : 'Empresa'}\n` +
+    `📝 *Nombre:* ${booking.name}\n` +
+    `📄 *Documento:* ${booking.document}\n` +
+    `📱 *Teléfono:* ${booking.phone}\n` +
+    `📧 *Correo:* ${booking.email}\n\n` +
+    `🚙 *Vehículo:* ${vehicle.name} (${vehicle.type})\n` +
+    `📅 *Recogida:* ${booking.pickupDate}\n` +
+    `📅 *Devolución:* ${booking.returnDate}\n` +
+    `⏱ *Días:* ${booking.days}\n` +
+    `📍 *Ubicación:* ${booking.location}\n\n` +
+    `${extrasList ? '✨ *Extras:*\n' + extrasList + '\n\n' : ''}` +
+    `💰 *TOTAL ESTIMADO:* $${total}\n\n` +
+    `Por favor, confirma la disponibilidad y coordina la entrega en Caracas, La California. ¡Gracias!`;
 }
