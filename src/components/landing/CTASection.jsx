@@ -12,7 +12,7 @@ export default function CTASection() {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
-            href="https://wa.me/584123456789" 
+            href="https://wa.me/584129706050" 
             target="_blank" 
             rel="noopener noreferrer"
             className="btn-primary text-center text-lg"
