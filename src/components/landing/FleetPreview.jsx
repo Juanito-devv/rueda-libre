@@ -56,6 +56,8 @@ export default function FleetPreview() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   src={vehicle.image}
                   alt={vehicle.name}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="p-8 flex-1 flex flex-col justify-end relative z-20 -mt-16">
