@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export default function HeroSection() {
   const router = useRouter();
@@ -29,12 +30,12 @@ export default function HeroSection() {
             A empresas y particulares, tu mejor opción para avanzar. Buen servicio, sin complicaciones. Tu próximo destino empieza aquí.
           </p>
           <div className="pt-6">
-            <button
-              onClick={() => router.push('/catalog')}
+            <Link
+              href="/catalog"
               className="font-label-bold text-label-bold gold-btn px-10 py-5 rounded-full transition-all duration-300 animate-pulse-glow text-sm tracking-widest font-black"
             >
               RESERVAR AHORA
-            </button>
+            </Link>
           </div>
         </div>
 
