@@ -58,7 +58,7 @@ export default function Catalog() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent z-10 pointer-events-none"></div>
                 <div className="h-56 overflow-hidden relative">
                   <img
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 brightness-90 group-hover:brightness-110"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     src={vehicle.image}
                     alt={vehicle.name}
                   />
