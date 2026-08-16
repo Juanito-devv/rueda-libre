@@ -118,3 +118,27 @@ body {
     box-shadow: 0 0 40px rgba(37, 211, 102, 0.6);
   }
 }
+
+@media (max-width: 768px) {
+  .glass-panel,
+  .glass-panel-luxury {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .bg-orb {
+    filter: blur(40px);
+  }
+
+  nav {
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+  }
+
+  .animate-pulse-glow,
+  .animate-float,
+  .animate-float-delayed,
+  [style*="animation-name"] {
+    animation: none !important;
+  }
+}

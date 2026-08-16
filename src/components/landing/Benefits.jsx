@@ -26,7 +26,7 @@ export default function Benefits() {
             <div key={index} className={`text-center relative z-10 group ${index % 2 === 1 ? 'mt-0 md:mt-12' : ''}`}>
               <div className="w-32 h-32 mx-auto glass-panel rounded-full flex items-center justify-center mb-8 border border-white/10 group-hover:border-primary/50 transition-all duration-500 shadow-xl group-hover:shadow-primary/20 relative">
                 <div className="absolute inset-0 rounded-full bg-primary/0 group-hover:bg-primary/10 transition-colors duration-500"></div>
-                <span className="material-symbols-outlined text-transparent bg-clip-text bg-gradient-to-br from-primary to-accent-orange text-5xl z-10">{benefit.icon}</span>
+                <span className="material-symbols-outlined text-primary text-5xl z-10">{benefit.icon}</span>
               </div>
               <span className="text-primary font-label-bold text-label-bold text-sm block mb-4 tracking-widest">
                 {String(index + 1).padStart(2, '0')}
