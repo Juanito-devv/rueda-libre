@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -7,11 +8,105 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          red: '#DC2626',
-          darkred: '#991B1B',
-          charcoal: '#1E293B',
-          slate: '#334155',
+        'primary-fixed-dim': '#e9c349',
+        'secondary-container': '#3f465c',
+        'secondary-fixed-dim': '#bec6e0',
+        'surface-dim': '#101415',
+        'on-tertiary-fixed': '#111c2d',
+        'surface-bright': '#363a3b',
+        'on-tertiary-container': '#3a4559',
+        'on-secondary-container': '#adb4ce',
+        'surface-variant': '#323537',
+        'inverse-on-surface': '#2d3133',
+        'on-primary-fixed-variant': '#574500',
+        'on-error': '#690005',
+        'on-primary-fixed': '#241a00',
+        'on-secondary-fixed': '#131b2e',
+        'error': '#ffb4ab',
+        'surface-tint': '#e9c349',
+        'on-surface': '#e0e3e5',
+        'outline': '#99907c',
+        'on-secondary-fixed-variant': '#3f465c',
+        'surface-container-low': '#191c1e',
+        'background': '#0a0c0d',
+        'surface-container': '#1d2022',
+        'tertiary-container': '#a8b3ca',
+        'surface': '#101415',
+        'surface-container-lowest': '#050708',
+        'tertiary-fixed': '#d8e3fb',
+        'primary-fixed': '#ffe088',
+        'on-primary': '#3c2f00',
+        'secondary-fixed': '#dae2fd',
+        'on-secondary': '#283044',
+        'secondary': '#bec6e0',
+        'on-primary-container': '#554300',
+        'on-surface-variant': '#d0c5af',
+        'primary-container': '#d4af37',
+        'surface-container-high': '#272a2c',
+        'inverse-surface': '#e0e3e5',
+        'on-error-container': '#ffdad6',
+        'surface-container-highest': '#323537',
+        'inverse-primary': '#735c00',
+        'tertiary-fixed-dim': '#bcc7de',
+        'tertiary': '#c3cee6',
+        'error-container': '#93000a',
+        'on-background': '#e0e3e5',
+        'on-tertiary': '#263143',
+        'outline-variant': '#4d4635',
+        'primary': '#f2ca50',
+        'on-tertiary-fixed-variant': '#3c475a',
+        'accent-orange': '#ff8c00',
+        'accent-yellow': '#ffea00',
+      },
+      borderRadius: {
+        DEFAULT: '0.125rem',
+        'lg': '0.25rem',
+        'xl': '0.5rem',
+        'full': '0.75rem',
+        '2xl': '1rem',
+        '3xl': '1.5rem'
+      },
+      spacing: {
+        'gutter': '24px',
+        'section-gap': '120px',
+        'margin-mobile': '20px',
+        'container-max': '1280px',
+        'stack-lg': '32px',
+        'stack-sm': '8px',
+        'stack-md': '16px',
+        'margin-desktop': '80px'
+      },
+      fontFamily: {
+        'body-md': ['Inter'],
+        'label-bold': ['Inter'],
+        'headline-md': ['Montserrat'],
+        'display-lg': ['Montserrat'],
+        'display-lg-mobile': ['Montserrat'],
+        'headline-xl': ['Montserrat'],
+        'body-lg': ['Inter']
+      },
+      fontSize: {
+        'body-md': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
+        'label-bold': ['14px', { lineHeight: '1.0', letterSpacing: '0.1em', fontWeight: '700', textTransform: 'uppercase' }],
+        'headline-md': ['32px', { lineHeight: '1.2', fontWeight: '800', letterSpacing: '-0.01em' }],
+        'display-lg': ['72px', { lineHeight: '1.0', letterSpacing: '-0.03em', fontWeight: '900' }],
+        'display-lg-mobile': ['48px', { lineHeight: '1.1', fontWeight: '900', letterSpacing: '-0.02em' }],
+        'headline-xl': ['56px', { lineHeight: '1.1', fontWeight: '800', letterSpacing: '-0.02em' }],
+        'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }]
+      },
+      animation: {
+        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'float-delayed': 'float 6s ease-in-out 3s infinite',
+      },
+      keyframes: {
+        'pulse-glow': {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)', boxShadow: '0 0 20px rgba(242, 202, 80, 0.4), 0 0 40px rgba(255, 140, 0, 0.2)' },
+          '50%': { opacity: '.9', transform: 'scale(1.02)', boxShadow: '0 0 30px rgba(242, 202, 80, 0.6), 0 0 60px rgba(255, 140, 0, 0.4)' },
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
         }
       }
     },

@@ -10,7 +10,7 @@ import { generateWhatsAppMessage } from '../src/utils/whatsapp';
 export default function Booking() {
   const router = useRouter();
   const { id } = router.query;
-  
+
   const [vehicle, setVehicle] = useState(null);
   const [booking, setBooking] = useState({
     clientType: 'particular',
@@ -24,61 +24,66 @@ export default function Booking() {
     selectedExtras: [],
     days: 1
   });
-  
+
   useEffect(() => {
     if (id) {
       const found = vehicles.find(v => v.id === parseInt(id));
       setVehicle(found);
     }
   }, [id]);
-  
+
   const calculateTotal = () => {
     if (!vehicle) return 0;
-    
+
     const basePrice = vehicle.dailyRate * booking.days;
     const extrasPrice = booking.selectedExtras.reduce((total, extraId) => {
       const extra = extras.find(e => e.id === extraId);
       return total + (extra ? extra.price * booking.days : 0);
     }, 0);
-    
+
     return basePrice + extrasPrice;
   };
-  
+
   const handleConfirmBooking = () => {
     const message = generateWhatsAppMessage(vehicle, booking, calculateTotal());
-    const phoneNumber = '584129706050'; // Tu número de WhatsApp
+    const phoneNumber = '584129706050';
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
-  
+
   if (!vehicle) {
     return (
-      <div className="min-h-screen bg-brand-charcoal flex items-center justify-center">
-        <div className="text-white text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-brand-red mx-auto mb-4"></div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-on-surface text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
           <p className="text-xl">Cargando...</p>
         </div>
       </div>
     );
   }
-  
+
   return (
-    <div className="min-h-screen bg-brand-charcoal">
+    <div className="relative min-h-screen overflow-x-hidden">
       <Header />
-      
-      <main className="pt-24 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold text-white mb-8">
-            Reservar: <span className="text-brand-red">{vehicle.name}</span>
-          </h1>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <BookingForm 
+
+      <main className="py-section-gap">
+        <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+          <div className="text-center mb-16">
+            <h1 className="font-headline-xl text-headline-xl mb-6">
+              Reservar: <span className="gradient-text">{vehicle.name}</span>
+            </h1>
+            <p className="font-body-lg text-body-lg text-on-surface-variant text-lg uppercase tracking-widest">
+              Completa tus datos y coordina la entrega por WhatsApp
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <BookingForm
               booking={booking}
               onChange={setBooking}
               vehicle={vehicle}
             />
-            
-            <BookingSummary 
+
+            <BookingSummary
               vehicle={vehicle}
               booking={booking}
               total={calculateTotal()}
@@ -87,7 +92,7 @@ export default function Booking() {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
