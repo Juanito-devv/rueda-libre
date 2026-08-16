@@ -21,7 +21,7 @@ export default function Header() {
           RUEDA LIBRE
         </Link>
 
-        <div className="hidden md:flex items-center space-x-10">
+        <div className="hidden lg:flex items-center space-x-10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -36,19 +36,19 @@ export default function Header() {
         <div className="flex items-center space-x-6">
           <Link
             href="/booking"
-            className="hidden md:block font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors text-xs tracking-widest"
+            className="hidden lg:block font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors text-xs tracking-widest"
           >
             LOGIN
           </Link>
           <Link
             href="/catalog"
-            className="hidden md:block font-label-bold text-label-bold gold-btn px-8 py-3.5 rounded-full shadow-lg hover:shadow-primary/30 transition-all duration-300 text-xs tracking-widest font-black"
+            className="hidden lg:block font-label-bold text-label-bold gold-btn px-8 py-3.5 rounded-full shadow-lg hover:shadow-primary/30 transition-all duration-300 text-xs tracking-widest font-black"
           >
             RESERVAR AHORA
           </Link>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-primary"
+            className="lg:hidden text-primary"
             aria-label="Menú"
           >
             <span className="material-symbols-outlined text-3xl">
@@ -59,7 +59,7 @@ export default function Header() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden border-t border-white/10 bg-background/95 backdrop-blur-2xl">
+        <div className="lg:hidden border-t border-white/10 bg-background/95 backdrop-blur-2xl">
           <div className="px-margin-mobile py-6 flex flex-col gap-5">
             {navLinks.map((link) => (
               <Link
