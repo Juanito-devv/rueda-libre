@@ -161,6 +161,26 @@ export default function BookingForm({ booking, onChange, vehicle }) {
               </label>
             ))}
           </div>
+
+          <div className="mt-5">
+            <label className="block text-on-surface-variant mb-3 font-label-bold text-label-bold tracking-widest text-xs">Garantías según edad</label>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-3 p-4 bg-surface/50 border border-white/10 rounded-xl">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-primary">person</span>
+                  <span className="text-white font-medium">Mayor de 30 años</span>
+                </div>
+                <span className="text-primary font-bold">$500</span>
+              </div>
+              <div className="flex items-center justify-between gap-3 p-4 bg-surface/50 border border-white/10 rounded-xl">
+                <div className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-accent-orange">person_off</span>
+                  <span className="text-white font-medium">Menor de 30 años</span>
+                </div>
+                <span className="text-accent-orange font-bold">$1000</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

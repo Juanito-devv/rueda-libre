@@ -33,7 +33,7 @@ export default function ConditionsSection() {
                     <p className="text-on-surface-variant text-sm">Garantía estándar</p>
                   </div>
                 </div>
-                <span className="text-primary font-bold text-sm">A convenir</span>
+                <span className="text-primary font-bold text-sm">$500</span>
               </div>
 
               <div className="flex items-center justify-between gap-4 p-5 bg-surface/50 border border-white/10 rounded-2xl">
@@ -46,12 +46,12 @@ export default function ConditionsSection() {
                     <p className="text-on-surface-variant text-sm">Garantía especial</p>
                   </div>
                 </div>
-                <span className="text-accent-orange font-bold text-sm">A convenir</span>
+                <span className="text-accent-orange font-bold text-sm">$1000</span>
               </div>
             </div>
 
             <p className="font-body-md text-on-surface-variant mt-6 text-sm">
-              El monto de la garantía se confirma con el asesor al momento de reservar.
+              La garantía se define según la edad del conductor principal.
             </p>
           </div>
 
