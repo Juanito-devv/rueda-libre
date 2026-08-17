@@ -3,6 +3,7 @@ import HeroSection from '../src/components/landing/HeroSection';
 import ValueProps from '../src/components/landing/ValueProps';
 import FleetPreview from '../src/components/landing/FleetPreview';
 import Benefits from '../src/components/landing/Benefits';
+import StarlinkSection from '../src/components/landing/StarlinkSection';
 import Segments from '../src/components/landing/Segments';
 import HowItWorks from '../src/components/landing/HowItWorks';
 import CTASection from '../src/components/landing/CTASection';
@@ -22,6 +23,7 @@ export default function Home() {
         <ValueProps />
         <FleetPreview />
         <Benefits />
+        <StarlinkSection />
         <Segments />
         <HowItWorks />
         <CTASection />

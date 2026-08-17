@@ -115,4 +115,5 @@ export const extras = [
   { id: 'driver', name: 'Chofer Corporativo', price: 25, description: 'Conductor profesional para eventos empresariales' },
   { id: 'delivery', name: 'Entrega a Domicilio', price: 15, description: 'Llevamos el vehículo donde estés' },
   { id: 'insurance', name: 'Seguro Extendido', price: 20, description: 'Cobertura completa sin deducible' },
+  { id: 'starlink', name: 'Starlink Premium', price: 30, description: 'Internet satelital Starlink en tu vehículo. Conectividad total en cualquier ruta' },
 ];
