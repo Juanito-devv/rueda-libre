@@ -6,6 +6,7 @@ import Benefits from '../src/components/landing/Benefits';
 import StarlinkSection from '../src/components/landing/StarlinkSection';
 import Segments from '../src/components/landing/Segments';
 import HowItWorks from '../src/components/landing/HowItWorks';
+import ConditionsSection from '../src/components/landing/ConditionsSection';
 import CTASection from '../src/components/landing/CTASection';
 import Footer from '../src/components/layout/Footer';
 import WhatsAppButton from '../src/components/layout/WhatsAppButton';
@@ -26,6 +27,7 @@ export default function Home() {
         <StarlinkSection />
         <Segments />
         <HowItWorks />
+        <ConditionsSection />
         <CTASection />
       </main>
       <Footer />
