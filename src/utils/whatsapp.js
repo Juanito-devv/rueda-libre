@@ -10,37 +10,38 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
     .filter(Boolean)
     .join('\n');
 
-  const sep = '──────────────────────────────';
+  const sep = '──────────────────────────────────';
 
   const lines = [
-    '*NUEVA RESERVA - RUEDA LIBRE*',
+    'RUEDA LIBRE',
+    'Solicitud de Reserva',
     sep,
     '',
-    `*Cliente:* ${booking.clientType === 'particular' ? 'Particular' : 'Empresa'}`,
-    `*Nombre:* ${booking.name || '—'}`,
-    `*Documento:* ${booking.document || '—'}`,
-    `*Teléfono:* ${booking.phone || '—'}`,
+    `Cliente: ${booking.clientType === 'particular' ? 'Particular' : 'Empresa'}`,
+    `Nombre: ${booking.name || '—'}`,
+    `Documento: ${booking.document || '—'}`,
+    `Teléfono: ${booking.phone || '—'}`,
   ];
 
   if (booking.email) {
-    lines.push(`*Correo:* ${booking.email}`);
+    lines.push(`Correo: ${booking.email}`);
   }
 
   lines.push(
     '',
-    `*Vehículo:* ${vehicle.name} (${vehicle.type})`,
-    `*Recogida:* ${booking.pickupDate}`,
-    `*Devolución:* ${booking.returnDate}`,
-    `*Días:* ${booking.days}`,
-    `*Ubicación:* ${booking.location || '—'}`,
+    `Vehículo: ${vehicle.name} (${vehicle.type})`,
+    `Recogida: ${booking.pickupDate}`,
+    `Devolución: ${booking.returnDate}`,
+    `Días: ${booking.days}`,
+    `Ubicación: ${booking.location || '—'}`,
     ''
   );
 
   if (extrasList) {
-    lines.push('*Servicios Adicionales:*', extrasList, '');
+    lines.push('Servicios Adicionales:', extrasList, '');
   }
 
-  lines.push(sep, `*TOTAL ESTIMADO:* $${total}`, '');
+  lines.push(sep, `TOTAL ESTIMADO: $${total}`, '');
   lines.push(
     `Por favor, confirma la disponibilidad y coordina la entrega en ${SITE.deliveryCity}. ¡Gracias!`
   );
