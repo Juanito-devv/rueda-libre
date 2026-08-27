@@ -120,6 +120,10 @@ body {
   }
 }
 
+section[id] {
+  scroll-margin-top: 110px;
+}
+
 @media (max-width: 768px) {
   .glass-panel,
   .glass-panel-luxury {

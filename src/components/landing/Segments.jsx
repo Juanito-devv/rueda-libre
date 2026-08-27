@@ -19,7 +19,7 @@ const segments = [
 
 export default function Segments() {
   return (
-    <section className="py-section-gap relative">
+    <section id="servicios" className="py-section-gap relative">
       <div className="absolute inset-0 bg-surface-container-lowest/80 -z-10"></div>
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
         <div className="text-center mb-20">

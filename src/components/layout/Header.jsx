@@ -2,10 +2,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const navLinks = [
-  { href: '#fleet', label: 'Flota' },
-  { href: '/catalog', label: 'Servicios' },
-  { href: '#how-it-works', label: 'Cómo Funciona' },
-  { href: '#contact', label: 'Contacto' },
+  { href: '/catalog', label: 'Flota' },
+  { href: '/#servicios', label: 'Servicios' },
+  { href: '/#how-it-works', label: 'Cómo Funciona' },
+  { href: '/#contact', label: 'Contacto' },
 ];
 
 export default function Header() {
@@ -23,13 +23,13 @@ export default function Header() {
 
         <div className="hidden lg:flex items-center space-x-10">
           {navLinks.map((link) => (
-            <Link
+            <a
               key={link.href}
               href={link.href}
               className="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors tracking-widest text-sm luxury-border pb-1"
             >
               {link.label}
-            </Link>
+            </a>
           ))}
         </div>
 
@@ -56,14 +56,14 @@ export default function Header() {
         <div className="lg:hidden border-t border-white/10 bg-background/95 backdrop-blur-2xl">
           <div className="px-margin-mobile py-6 flex flex-col gap-5">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
                 className="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors tracking-widest text-sm"
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
             <Link
               href="/catalog"
