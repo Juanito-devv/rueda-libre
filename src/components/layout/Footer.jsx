@@ -49,7 +49,7 @@ export default function Footer() {
             <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/5">
               <span className="material-symbols-outlined text-primary text-sm">phone</span>
             </div>
-            +{SITE.whatsappDisplay}
+            {SITE.whatsappDisplay}
           </li>
           <li className="flex items-center gap-4 text-on-surface-variant font-body-md text-body-md">
             <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/5">

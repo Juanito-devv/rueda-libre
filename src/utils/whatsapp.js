@@ -46,8 +46,9 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
 }
 
 export function getWhatsAppUrl(message) {
+  const base = `https://api.whatsapp.com/send?phone=${SITE.whatsappNumber}`;
   if (!message) {
-    return `https://wa.me/${SITE.whatsappNumber}`;
+    return base;
   }
-  return `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  return `${base}&text=${encodeURIComponent(message)}`;
 }

@@ -43,9 +43,17 @@ export default function Booking() {
       setStatus('notfound');
       return;
     }
+    const fromQuery = router.query.desde;
+    const toQuery = router.query.hasta;
+    const validDate = (x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
     const found = vehicles.find(v => v.id === Number(id));
     if (found) {
       setVehicle(found);
+      setBooking(prev => ({
+        ...prev,
+        pickupDate: !prev.pickupDate && validDate(fromQuery) ? fromQuery : prev.pickupDate,
+        returnDate: !prev.returnDate && validDate(toQuery) ? toQuery : prev.returnDate,
+      }));
       setStatus('ready');
     } else {
       setVehicle(null);

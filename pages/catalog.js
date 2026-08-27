@@ -142,7 +142,7 @@ export default function Catalog() {
               {filteredVehicles.map(vehicle => (
                 <Link
                   key={vehicle.id}
-                  href={`/booking?id=${vehicle.id}`}
+                  href={`/booking?id=${vehicle.id}${searchFrom ? `&desde=${encodeURIComponent(searchFrom)}` : ''}${searchTo ? `&hasta=${encodeURIComponent(searchTo)}` : ''}`}
                   className="glass-panel rounded-3xl overflow-hidden hover-lift group text-left flex flex-col border border-white/10 relative"
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent z-10 pointer-events-none"></div>

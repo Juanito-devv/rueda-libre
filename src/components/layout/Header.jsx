@@ -26,7 +26,7 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors tracking-widest text-xs luxury-border pb-1"
+              className="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors tracking-widest text-sm luxury-border pb-1"
             >
               {link.label}
             </Link>
@@ -60,7 +60,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors tracking-widest text-xs"
+                className="font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors tracking-widest text-sm"
               >
                 {link.label}
               </Link>
