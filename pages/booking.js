@@ -7,6 +7,7 @@ import BookingForm from '../src/components/booking/BookingForm';
 import BookingSummary from '../src/components/booking/BookingSummary';
 import { vehicles, extras } from '../src/data/vehicles';
 import { generateWhatsAppMessage, getWhatsAppUrl } from '../src/utils/whatsapp';
+import { generateInvoicePdf } from '../src/utils/invoice';
 
 export function getBookingDays(pickupDate, returnDate) {
   if (!pickupDate || !returnDate) return 0;
@@ -67,9 +68,14 @@ export default function Booking() {
     return basePrice + extrasPrice;
   };
 
+  const handleDownloadInvoice = () => {
+    generateInvoicePdf({ vehicle, booking: { ...booking, days }, total: calculateTotal(), days });
+  };
+
   const handleConfirmBooking = () => {
     const message = generateWhatsAppMessage(vehicle, { ...booking, days }, calculateTotal());
     window.open(getWhatsAppUrl(message), '_blank');
+    handleDownloadInvoice();
   };
 
   if (status === 'loading') {
@@ -134,6 +140,7 @@ export default function Booking() {
               datesValid={datesValid}
               total={calculateTotal()}
               onConfirm={handleConfirmBooking}
+              onDownloadInvoice={handleDownloadInvoice}
             />
           </div>
         </div>

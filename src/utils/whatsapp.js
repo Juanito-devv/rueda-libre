@@ -28,7 +28,7 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
     `🚙 *Vehículo:* ${vehicle.name} (${vehicle.type})`,
     `📅 *Recogida:* ${booking.pickupDate}`,
     `📅 *Devolución:* ${booking.returnDate}`,
-    `⏱ *Días:* ${booking.days}`,
+    `⏳ *Días:* ${booking.days}`,
     `📍 *Ubicación:* ${booking.location || '—'}`,
     ''
   );

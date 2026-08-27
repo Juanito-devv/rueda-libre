@@ -85,8 +85,8 @@ export default function HeroSection() {
 
             <div>
               <label className="block text-on-surface-variant mb-2 font-label-bold text-label-bold tracking-widest text-xs">Fecha de inicio</label>
-              <div className="relative group">
-                <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-accent-orange transition-colors pointer-events-none">
+              <div className="group flex items-center bg-surface-container/80 border border-white/20 rounded-xl transition-all focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+                <span className="material-symbols-outlined text-primary group-focus-within:text-accent-orange transition-colors pointer-events-none pl-5 pr-2 text-xl">
                   calendar_today
                 </span>
                 <input
@@ -96,15 +96,15 @@ export default function HeroSection() {
                     setPickupDate(e.target.value);
                     setDateError('');
                   }}
-                  className="w-full bg-surface-container/80 border border-white/20 rounded-xl py-5 pl-16 pr-5 text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md"
+                  className="w-full min-w-0 bg-transparent outline-none py-5 pr-5 text-white font-body-md"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-on-surface-variant mb-2 font-label-bold text-label-bold tracking-widest text-xs">Fecha de fin</label>
-              <div className="relative group">
-                <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-primary group-focus-within:text-accent-orange transition-colors pointer-events-none">
+              <div className="group flex items-center bg-surface-container/80 border border-white/20 rounded-xl transition-all focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+                <span className="material-symbols-outlined text-primary group-focus-within:text-accent-orange transition-colors pointer-events-none pl-5 pr-2 text-xl">
                   calendar_month
                 </span>
                 <input
@@ -114,7 +114,7 @@ export default function HeroSection() {
                     setReturnDate(e.target.value);
                     setDateError('');
                   }}
-                  className="w-full bg-surface-container/80 border border-white/20 rounded-xl py-5 pl-16 pr-5 text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md"
+                  className="w-full min-w-0 bg-transparent outline-none py-5 pr-5 text-white font-body-md"
                 />
               </div>
             </div>

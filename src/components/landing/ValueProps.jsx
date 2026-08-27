@@ -1,7 +1,7 @@
 const values = [
   {
     icon: 'favorite',
-    title: 'Confort',
+    title: 'Comfort',
     description: 'Vehículo limpio, cómodo y preparado para que solo te preocupes por disfrutar el camino.',
     orbClass: 'bg-error/10 group-hover:bg-error/20',
     iconBoxClass: 'from-error/20 to-error/5 border-error/20',

@@ -1,6 +1,6 @@
 import { extras } from '../../data/vehicles';
 
-export default function BookingSummary({ vehicle, booking, days, datesValid, total, onConfirm }) {
+export default function BookingSummary({ vehicle, booking, days, datesValid, total, onConfirm, onDownloadInvoice }) {
   const emailFilled = booking.email.trim().length > 0;
   const emailValid = !emailFilled || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.email.trim());
   const documentOk = booking.clientType === 'empresa' ? booking.document.trim().length > 0 : true;
@@ -91,6 +91,15 @@ export default function BookingSummary({ vehicle, booking, days, datesValid, tot
         className="w-full mt-6 font-label-bold text-label-bold gold-btn px-6 py-4 rounded-xl text-lg tracking-widest font-black disabled:opacity-50 disabled:cursor-not-allowed"
       >
         Confirmar y Enviar a WhatsApp
+      </button>
+
+      <button
+        onClick={onDownloadInvoice}
+        disabled={!required}
+        className="w-full mt-3 flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-primary/40 text-primary font-label-bold text-label-bold tracking-widest hover:bg-primary/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        <span className="material-symbols-outlined text-lg">download</span>
+        Descargar Factura PDF
       </button>
 
       {!required && (
