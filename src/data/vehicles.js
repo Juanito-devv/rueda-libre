@@ -103,14 +103,6 @@ export const vehicles = [
   }
 ];
 
-export const filterCategories = [
-  { id: 'all', name: 'Todos los vehículos' },
-  { id: 'sedan', name: 'Sedanes' },
-  { id: 'suv', name: 'SUVs' },
-  { id: 'camioneta', name: 'Camionetas' },
-  { id: 'van', name: 'Vans' },
-];
-
 export const extras = [
   { id: 'driver', name: 'Chofer Corporativo', price: 25, description: 'Conductor profesional para eventos empresariales' },
   { id: 'delivery', name: 'Entrega a Domicilio', price: 15, description: 'Llevamos el vehículo donde estés' },

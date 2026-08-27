@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getWhatsAppUrl } from '../../utils/whatsapp';
 
 export default function CTASection() {
   return (
@@ -14,7 +15,7 @@ export default function CTASection() {
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
           <a
-            href="https://wa.me/584129706050"
+            href={getWhatsAppUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#25D366] to-[#1da851] text-white font-label-bold text-label-bold px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:shadow-[0_0_40px_rgba(37,211,102,0.5)] font-black tracking-widest w-full sm:w-auto animate-pulse-glow"

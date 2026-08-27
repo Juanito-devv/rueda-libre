@@ -2,7 +2,7 @@ import { extras } from '../../data/vehicles';
 
 const inputClass = "w-full bg-surface/50 border border-white/10 rounded-xl py-3 pl-4 pr-5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md backdrop-blur-sm placeholder:text-on-surface-variant/50";
 
-export default function BookingForm({ booking, onChange, vehicle }) {
+export default function BookingForm({ booking, onChange }) {
   const handleChange = (field, value) => {
     onChange({ ...booking, [field]: value });
   };
@@ -12,15 +12,6 @@ export default function BookingForm({ booking, onChange, vehicle }) {
       ? booking.selectedExtras.filter(id => id !== extraId)
       : [...booking.selectedExtras, extraId];
     handleChange('selectedExtras', selected);
-  };
-
-  const calculateDays = () => {
-    if (booking.pickupDate && booking.returnDate) {
-      const start = new Date(booking.pickupDate);
-      const end = new Date(booking.returnDate);
-      const diff = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-      handleChange('days', diff > 0 ? diff : 1);
-    }
   };
 
   return (
@@ -110,10 +101,7 @@ export default function BookingForm({ booking, onChange, vehicle }) {
             <input
               type="date"
               value={booking.pickupDate}
-              onChange={(e) => {
-                handleChange('pickupDate', e.target.value);
-                setTimeout(calculateDays, 100);
-              }}
+              onChange={(e) => handleChange('pickupDate', e.target.value)}
               className={inputClass}
             />
           </div>
@@ -122,14 +110,15 @@ export default function BookingForm({ booking, onChange, vehicle }) {
             <input
               type="date"
               value={booking.returnDate}
-              onChange={(e) => {
-                handleChange('returnDate', e.target.value);
-                setTimeout(calculateDays, 100);
-              }}
+              onChange={(e) => handleChange('returnDate', e.target.value)}
               className={inputClass}
             />
           </div>
         </div>
+
+        <p className="text-sm text-on-surface-variant/60 -mt-2">
+          La duración y el total se calculan automáticamente según las fechas.
+        </p>
 
         <div>
           <label className="block text-on-surface-variant mb-2 font-label-bold text-label-bold tracking-widest text-xs">Ubicación de Entrega</label>

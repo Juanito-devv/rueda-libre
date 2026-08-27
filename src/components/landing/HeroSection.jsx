@@ -7,10 +7,25 @@ export default function HeroSection() {
   const [clientType, setClientType] = useState('particular');
   const [pickupDate, setPickupDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
+  const [dateError, setDateError] = useState('');
 
   const handleSearch = (e) => {
     e.preventDefault();
-    router.push('/catalog');
+
+    if (pickupDate && returnDate && new Date(returnDate) < new Date(pickupDate)) {
+      setDateError('La fecha de devolución debe ser posterior a la de recogida.');
+      return;
+    }
+    setDateError('');
+
+    router.push({
+      pathname: '/catalog',
+      query: {
+        tipo: clientType,
+        ...(pickupDate ? { desde: pickupDate } : {}),
+        ...(returnDate ? { hasta: returnDate } : {}),
+      },
+    });
   };
 
   return (
@@ -77,7 +92,10 @@ export default function HeroSection() {
                 <input
                   type="date"
                   value={pickupDate}
-                  onChange={(e) => setPickupDate(e.target.value)}
+                  onChange={(e) => {
+                    setPickupDate(e.target.value);
+                    setDateError('');
+                  }}
                   className="w-full bg-surface-container/80 border border-white/20 rounded-xl py-5 pl-16 pr-5 text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md"
                 />
               </div>
@@ -92,11 +110,21 @@ export default function HeroSection() {
                 <input
                   type="date"
                   value={returnDate}
-                  onChange={(e) => setReturnDate(e.target.value)}
+                  onChange={(e) => {
+                    setReturnDate(e.target.value);
+                    setDateError('');
+                  }}
                   className="w-full bg-surface-container/80 border border-white/20 rounded-xl py-5 pl-16 pr-5 text-white focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md"
                 />
               </div>
             </div>
+
+            {dateError && (
+              <p className="text-sm text-error font-body-md flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">error</span>
+                {dateError}
+              </p>
+            )}
 
             <button
               type="submit"

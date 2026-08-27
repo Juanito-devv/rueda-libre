@@ -35,12 +35,6 @@ export default function Header() {
 
         <div className="flex items-center space-x-6">
           <Link
-            href="/booking"
-            className="hidden lg:block font-label-bold text-label-bold text-on-surface-variant hover:text-primary transition-colors text-xs tracking-widest"
-          >
-            LOGIN
-          </Link>
-          <Link
             href="/catalog"
             className="hidden lg:block font-label-bold text-label-bold gold-btn px-8 py-3.5 rounded-full shadow-lg hover:shadow-primary/30 transition-all duration-300 text-xs tracking-widest font-black"
           >

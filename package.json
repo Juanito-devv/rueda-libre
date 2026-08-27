@@ -1,7 +1,18 @@
 {
   "name": "rueda-libre-rental",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "description": "Sitio web de Rueda Libre: alquiler de vehículos por día en Caracas, Venezuela. Next.js + Tailwind CSS con export estático.",
   "private": true,
+  "keywords": [
+    "rueda libre",
+    "alquiler de vehículos",
+    "rent a car",
+    "caracas",
+    "venezuela",
+    "next.js",
+    "tailwindcss"
+  ],
+  "homepage": "https://rueda-libre1.vercel.app",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

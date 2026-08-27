@@ -1,6 +1,9 @@
 import Link from 'next/link';
+import { SITE } from '../../config/site';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="w-full py-20 bg-background max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
       <div className="col-span-1 md:col-span-2">
@@ -11,7 +14,7 @@ export default function Footer() {
           Muévete con confianza. Tu mejor opción para alquilar vehículos por día.
         </p>
         <p className="font-label-bold text-xs text-on-surface-variant/40 tracking-widest">
-          © 2024 RUEDA LIBRE. TODOS LOS DERECHOS RESERVADOS.
+          © {currentYear} RUEDA LIBRE. TODOS LOS DERECHOS RESERVADOS.
         </p>
       </div>
 
@@ -46,19 +49,19 @@ export default function Footer() {
             <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/5">
               <span className="material-symbols-outlined text-primary text-sm">phone</span>
             </div>
-            +58 412-9706050
+            +{SITE.whatsappDisplay}
           </li>
           <li className="flex items-center gap-4 text-on-surface-variant font-body-md text-body-md">
             <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/5">
               <span className="material-symbols-outlined text-primary text-sm">mail</span>
             </div>
-            info@ruedalibre.com
+            {SITE.email}
           </li>
           <li className="flex items-center gap-4 text-on-surface-variant font-body-md text-body-md">
             <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/5">
               <span className="material-symbols-outlined text-primary text-sm">location_on</span>
             </div>
-            Caracas, Venezuela
+            {SITE.location}
           </li>
         </ul>
       </div>

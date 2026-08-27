@@ -1,7 +1,17 @@
 import { extras } from '../../data/vehicles';
 
-export default function BookingSummary({ vehicle, booking, total, onConfirm }) {
-  const required = booking.name && booking.phone && booking.pickupDate && booking.returnDate;
+export default function BookingSummary({ vehicle, booking, days, datesValid, total, onConfirm }) {
+  const emailFilled = booking.email.trim().length > 0;
+  const emailValid = !emailFilled || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.email.trim());
+  const documentOk = booking.clientType === 'empresa' ? booking.document.trim().length > 0 : true;
+  const required =
+    booking.name.trim() &&
+    booking.phone.trim() &&
+    booking.pickupDate &&
+    booking.returnDate &&
+    datesValid &&
+    emailValid &&
+    documentOk;
 
   return (
     <div className="glass-panel-luxury rounded-3xl p-8 md:p-10 border border-primary/20 sticky top-28 relative overflow-hidden">
@@ -31,10 +41,16 @@ export default function BookingSummary({ vehicle, booking, total, onConfirm }) {
             <span>Hasta: {booking.returnDate}</span>
           </div>
         )}
-        {booking.days > 0 && (
+        {!datesValid && booking.pickupDate && booking.returnDate && (
+          <div className="flex items-center gap-3 text-error">
+            <span className="material-symbols-outlined">error</span>
+            <span>La fecha de devolución debe ser posterior a la de recogida.</span>
+          </div>
+        )}
+        {days > 0 && (
           <div className="flex items-center gap-3 text-on-surface-variant">
             <span className="material-symbols-outlined text-primary">schedule</span>
-            <span>{booking.days} día(s)</span>
+            <span>{days} día(s)</span>
           </div>
         )}
         {booking.location && (
@@ -47,16 +63,16 @@ export default function BookingSummary({ vehicle, booking, total, onConfirm }) {
 
       <div className="border-t border-white/10 pt-4 space-y-2">
         <div className="flex justify-between text-on-surface-variant">
-          <span>Vehículo ({booking.days} días)</span>
-          <span>${vehicle.dailyRate * booking.days}</span>
+          <span>Vehículo {days > 0 ? `(${days} día(s))` : '(tarifa diaria)'}</span>
+          <span>{days > 0 ? `$${vehicle.dailyRate * days}` : `$${vehicle.dailyRate}/día`}</span>
         </div>
 
         {booking.selectedExtras.map(extraId => {
           const extra = extras.find(e => e.id === extraId);
           return extra ? (
             <div key={extra.id} className="flex justify-between text-on-surface-variant">
-              <span>{extra.name} ({booking.days} días)</span>
-              <span>+${extra.price * booking.days}</span>
+              <span>{extra.name} {days > 0 ? `(${days} día(s))` : '(tarifa diaria)'}</span>
+              <span>{days > 0 ? `+$${extra.price * days}` : `+$${extra.price}/día`}</span>
             </div>
           ) : null;
         })}
@@ -65,7 +81,7 @@ export default function BookingSummary({ vehicle, booking, total, onConfirm }) {
       <div className="border-t border-white/10 mt-4 pt-4">
         <div className="flex justify-between items-center">
           <span className="text-xl font-bold text-white">TOTAL</span>
-          <span className="text-3xl font-bold gradient-text">${total}</span>
+          <span className="text-3xl font-bold gradient-text">{days > 0 ? `$${total}` : '—'}</span>
         </div>
       </div>
 
@@ -78,9 +94,15 @@ export default function BookingSummary({ vehicle, booking, total, onConfirm }) {
       </button>
 
       {!required && (
-        <p className="text-yellow-400 text-sm mt-2 text-center">
-          Completa todos los campos obligatorios para confirmar
-        </p>
+        <div className="text-yellow-400 text-sm mt-2 text-center">
+          {booking.clientType === 'empresa' && !documentOk
+            ? 'Indica el RIF de la empresa para confirmar'
+            : emailFilled && !emailValid
+              ? 'Revisa el correo electrónico: no parece válido'
+              : !datesValid
+                ? 'Revisa las fechas: la devolución debe ser posterior a la recogida'
+                : 'Completa nombre, teléfono y fechas para confirmar'}
+        </div>
       )}
     </div>
   );

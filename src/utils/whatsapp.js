@@ -1,27 +1,53 @@
+import { extras } from '../data/vehicles';
+import { SITE } from '../config/site';
+
 export function generateWhatsAppMessage(vehicle, booking, total) {
   const extrasList = booking.selectedExtras
     .map(id => {
-      const extra = {
-        driver: 'Chofer Corporativo',
-        delivery: 'Entrega a Domicilio',
-        insurance: 'Seguro Extendido'
-      }[id];
-      return `- ${extra}`;
+      const extra = extras.find(e => e.id === id);
+      return extra ? `- ${extra.name} (+$${extra.price}/día)` : null;
     })
+    .filter(Boolean)
     .join('\n');
 
-  return `🚗 *NUEVA RESERVA - RUEDA LIBRE*\n\n` +
-    `👤 *Cliente:* ${booking.clientType === 'particular' ? 'Particular' : 'Empresa'}\n` +
-    `📝 *Nombre:* ${booking.name}\n` +
-    `📄 *Documento:* ${booking.document}\n` +
-    `📱 *Teléfono:* ${booking.phone}\n` +
-    `📧 *Correo:* ${booking.email}\n\n` +
-    `🚙 *Vehículo:* ${vehicle.name} (${vehicle.type})\n` +
-    `📅 *Recogida:* ${booking.pickupDate}\n` +
-    `📅 *Devolución:* ${booking.returnDate}\n` +
-    `⏱ *Días:* ${booking.days}\n` +
-    `📍 *Ubicación:* ${booking.location}\n\n` +
-    `${extrasList ? '✨ *Extras:*\n' + extrasList + '\n\n' : ''}` +
-    `💰 *TOTAL ESTIMADO:* $${total}\n\n` +
-    `Por favor, confirma la disponibilidad y coordina la entrega en Caracas, La California. ¡Gracias!`;
+  const lines = [
+    '🚗 *NUEVA RESERVA - RUEDA LIBRE*',
+    '',
+    `👤 *Cliente:* ${booking.clientType === 'particular' ? 'Particular' : 'Empresa'}`,
+    `📝 *Nombre:* ${booking.name || '—'}`,
+    `📄 *Documento:* ${booking.document || '—'}`,
+    `📱 *Teléfono:* ${booking.phone || '—'}`,
+  ];
+
+  if (booking.email) {
+    lines.push(`📧 *Correo:* ${booking.email}`);
+  }
+
+  lines.push(
+    '',
+    `🚙 *Vehículo:* ${vehicle.name} (${vehicle.type})`,
+    `📅 *Recogida:* ${booking.pickupDate}`,
+    `📅 *Devolución:* ${booking.returnDate}`,
+    `⏱ *Días:* ${booking.days}`,
+    `📍 *Ubicación:* ${booking.location || '—'}`,
+    ''
+  );
+
+  if (extrasList) {
+    lines.push('✨ *Extras:*', extrasList, '');
+  }
+
+  lines.push(`💰 *TOTAL ESTIMADO:* $${total}`, '');
+  lines.push(
+    `Por favor, confirma la disponibilidad y coordina la entrega en ${SITE.deliveryCity}. ¡Gracias!`
+  );
+
+  return lines.join('\n');
+}
+
+export function getWhatsAppUrl(message) {
+  if (!message) {
+    return `https://wa.me/${SITE.whatsappNumber}`;
+  }
+  return `https://wa.me/${SITE.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }

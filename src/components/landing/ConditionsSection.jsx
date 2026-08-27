@@ -66,11 +66,24 @@ export default function ConditionsSection() {
             </div>
 
             <div className="bg-surface/50 border border-white/10 rounded-2xl p-6 mb-6 relative z-10">
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-white font-bold text-lg">Camioneta Pick-Up</p>
-                <p className="text-primary font-display-lg text-3xl font-black">$150<span className="text-xs font-label-bold text-on-surface-variant uppercase tracking-widest ml-1"> / día</span></p>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-white font-bold text-lg">Camioneta Pick-Up 4x4</p>
+                    <p className="text-on-surface-variant text-sm">Ideal para trabajo pesado</p>
+                  </div>
+                  <p className="text-primary font-display-lg text-3xl font-black">$85<span className="text-xs font-label-bold text-on-surface-variant uppercase tracking-widest ml-1"> / día</span></p>
+                </div>
+                <div className="h-px bg-white/5"></div>
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <p className="text-white font-bold text-lg">SUV Familiar</p>
+                    <p className="text-on-surface-variant text-sm">Espacio para toda la familia</p>
+                  </div>
+                  <p className="text-accent-orange font-display-lg text-3xl font-black">$65<span className="text-xs font-label-bold text-on-surface-variant uppercase tracking-widest ml-1"> / día</span></p>
+                </div>
               </div>
-              <div className="space-y-3">
+              <div className="space-y-3 mt-6 pt-5 border-t border-white/5">
                 <div className="flex items-center gap-3 text-on-surface-variant font-body-md">
                   <span className="material-symbols-outlined text-primary text-lg">route</span>
                   <span>Incluye hasta <span className="text-white font-bold">300 km</span></span>
