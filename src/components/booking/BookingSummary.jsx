@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import { extras } from '../../data/vehicles';
+import { fetchBcvRate, formatVes } from '../../utils/currency';
 
 export default function BookingSummary({ vehicle, booking, days, datesValid, total, onConfirm, onDownloadInvoice }) {
   const emailFilled = booking.email.trim().length > 0;
@@ -12,6 +14,19 @@ export default function BookingSummary({ vehicle, booking, days, datesValid, tot
     datesValid &&
     emailValid &&
     documentOk;
+
+  const [vesRate, setVesRate] = useState(null);
+
+  useEffect(() => {
+    if (!days) return;
+    let mounted = true;
+    fetchBcvRate().then((rate) => {
+      if (mounted && rate && rate > 0) setVesRate(rate);
+    });
+    return () => {
+      mounted = false;
+    };
+  }, [total, days]);
 
   return (
     <div className="glass-panel-luxury rounded-3xl p-8 md:p-10 border border-primary/20 sticky top-28 relative overflow-hidden">
@@ -81,8 +96,28 @@ export default function BookingSummary({ vehicle, booking, days, datesValid, tot
       <div className="border-t border-white/10 mt-4 pt-4">
         <div className="flex justify-between items-center">
           <span className="text-xl font-bold text-white">TOTAL</span>
-          <span className="text-3xl font-bold gradient-text">{days > 0 ? `$${total}` : '—'}</span>
+          <div className="text-right">
+            <span className="text-3xl font-bold gradient-text block">{days > 0 ? `$${total}` : '—'}</span>
+            {days > 0 && vesRate && (
+              <span className="text-sm text-on-surface-variant">≈ {formatVes(total * vesRate)}</span>
+            )}
+          </div>
         </div>
+        {days > 0 && vesRate && (
+          <p className="text-xs text-on-surface-variant/60 mt-1 flex items-center gap-1">
+            <span className="material-symbols-outlined text-xs">info</span>
+            Tasa BCV del día (oficial)
+          </p>
+        )}
+      </div>
+
+      <div className="mt-5 p-4 bg-surface/50 border border-white/10 rounded-xl flex items-start gap-3 text-sm text-on-surface-variant">
+        <span className="material-symbols-outlined text-primary">schedule</span>
+        <p>
+          Entrega y devolución de vehículos de{' '}
+          <span className="text-white font-semibold">7:00 am a 6:00 pm</span>. Salir de este horario
+          tiene un <span className="text-white font-semibold">costo adicional</span>.
+        </p>
       </div>
 
       <button

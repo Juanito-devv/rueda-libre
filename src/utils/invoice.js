@@ -1,5 +1,6 @@
 import { SITE } from '../config/site';
 import { extras } from '../data/vehicles';
+import { fetchBcvRate, formatVes } from './currency';
 
 function formatDate(dateStr) {
   if (!dateStr) return '—';
@@ -23,6 +24,8 @@ function clientTypeLabel(type) {
 export async function generateInvoicePdf({ vehicle, booking, total, days }) {
   const { default: jsPDF } = await import('jspdf');
   const { default: autoTable } = await import('jspdf-autotable');
+
+  const bcvRate = await fetchBcvRate();
 
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
   const pageW = doc.internal.pageSize.getWidth();
@@ -135,21 +138,50 @@ export async function generateInvoicePdf({ vehicle, booking, total, days }) {
   });
 
   const tableEnd = doc.lastAutoTable ? doc.lastAutoTable.finalY + 6 : y + 10;
+  let ny = tableEnd;
+
+  if (bcvRate) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(20, 23, 25);
+    doc.text(`Equivalente en bolívares: ${formatVes(bcvRate * total)}`, margin, ny);
+    ny += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(90, 90, 90);
+    doc.text(
+      `Tasa BCV del día (oficial): 1 USD = Bs. ${bcvRate.toLocaleString('es-VE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      margin,
+      ny
+    );
+    ny += 8;
+  }
 
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(9);
   doc.setTextColor(90, 90, 90);
   doc.text(
+    'Entrega y devolución de vehículos de 7:00 am a 6:00 pm. Fuera de este horario tiene costo adicional.',
+    margin,
+    ny
+  );
+  ny += 5;
+  doc.text(
     'Esta factura/orden de reserva es estimada y está sujeta a la confirmación de disponibilidad del vehículo.',
     margin,
-    tableEnd
+    ny
   );
+  ny += 5;
   doc.text(
     'El pago se realiza contra entrega y la entrega se coordina por WhatsApp al confirmar la reserva.',
     margin,
-    tableEnd + 5
+    ny
   );
-  doc.text(`Contacto: ${SITE.whatsappDisplay} · ${SITE.email}`, margin, tableEnd + 10);
+  ny += 5;
+  doc.text(`Contacto: ${SITE.whatsappDisplay} · ${SITE.email}`, margin, ny);
 
   doc.setFontSize(8.5);
   doc.setTextColor(150, 150, 150);

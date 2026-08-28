@@ -43,6 +43,8 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
 
   lines.push(sep, `TOTAL ESTIMADO: $${total}`, '');
   lines.push(
+    'Entrega de vehículos: 7:00 am a 6:00 pm. Fuera de este horario tiene costo adicional.',
+    '',
     `Por favor, confirma la disponibilidad y coordina la entrega en ${SITE.deliveryCity}. ¡Gracias!`
   );
 
