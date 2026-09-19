@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { extras } from '../../data/vehicles';
+import { compressImage } from '../../utils/image';
 
 const inputClass = "w-full bg-surface/50 border border-white/10 rounded-xl py-3 pl-4 pr-5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md backdrop-blur-sm placeholder:text-on-surface-variant/50";
 
@@ -37,7 +38,7 @@ export default function BookingForm({ booking, onChange, paymentMethods }) {
     handleChange('pagoMetodoId', next.pagoMetodoId);
   };
 
-  const handleFile = (key, file) => {
+  const handleFile = async (key, file) => {
     if (!file) {
       handleChange('files', { ...booking.files, [key]: null });
       return;
@@ -50,8 +51,17 @@ export default function BookingForm({ booking, onChange, paymentMethods }) {
       setUploadError(`${UPLOAD_LABELS[key].label}: el archivo supera los ${MAX_MB} MB.`);
       return;
     }
-    setUploadError('');
-    handleChange('files', { ...booking.files, [key]: file });
+    try {
+      const compressed = await compressImage(file);
+      if (compressed.bytes > 1.5 * 1024 * 1024) {
+        setUploadError(`${UPLOAD_LABELS[key].label}: la imagen no se pudo comprimir lo suficiente. Usa una foto más ligera.`);
+        return;
+      }
+      setUploadError('');
+      handleChange('files', { ...booking.files, [key]: compressed });
+    } catch (e) {
+      setUploadError(`${UPLOAD_LABELS[key].label}: no se pudo procesar la imagen. Intenta con otra foto.`);
+    }
   };
 
   const selectedMethod = paymentMethods.find((m) => m.id === booking.pagoMetodoId);

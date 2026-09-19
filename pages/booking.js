@@ -7,6 +7,7 @@ import BookingSummary from '../src/components/booking/BookingSummary';
 import { generateWhatsAppMessage, getWhatsAppUrl } from '../src/utils/whatsapp';
 import { generateInvoicePdf } from '../src/utils/invoice';
 import { getBookingDays, calculateBookingTotal } from '../src/utils/booking';
+import { fileToBase64 } from '../src/utils/image';
 import { fetchVehicleById, fetchPaymentMethods } from '../src/lib/vehicles';
 
 export async function getServerSideProps(ctx) {
@@ -24,14 +25,6 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-
-const fileToBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(String(reader.result).split(',')[1] || '');
-    reader.onerror = reject;
-    reader.readAsDataURL(file);
-  });
 
 export default function Booking({ vehicle, paymentMethods, desde, hasta }) {
   const [booking, setBooking] = useState({
@@ -90,7 +83,11 @@ export default function Booking({ vehicle, paymentMethods, desde, hasta }) {
           setSubmitting(false);
           return;
         }
-        payload.files[key] = { name: f.name, type: f.type, data: await fileToBase64(f) };
+        payload.files[key] = {
+          name: f.name,
+          type: f.type,
+          data: f.data || (await fileToBase64(f)),
+        };
       }
     }
     try {
@@ -99,9 +96,20 @@ export default function Booking({ vehicle, paymentMethods, desde, hasta }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      const body = await res.json();
+      const raw = await res.text();
+      let body = null;
+      try {
+        body = JSON.parse(raw);
+      } catch (e) {
+        body = null;
+      }
       if (!res.ok) {
-        setSubmitError(body.error || 'No se pudo crear la reserva. Inténtalo de nuevo.');
+        setSubmitError(
+          body?.error ||
+            (res.status === 413
+              ? 'Las fotos pesan demasiado para el servidor. Toma fotos con mejor luz y vuelve a intentar.'
+              : 'No se pudo crear la reserva. Inténtalo de nuevo.')
+        );
         setSubmitting(false);
         return;
       }
