@@ -1,8 +1,14 @@
+const UNCONFIGURED = new Set(['0', 'none', 'no', 'pendiente', 'no-configurado', 'undefined']);
+
+function isConfigured(value) {
+  return typeof value === 'string' && value.trim() !== '' && !UNCONFIGURED.has(value.trim().toLowerCase());
+}
+
 export async function sendOwnerNotification(message) {
   const token = process.env.WHATSAPP_TOKEN;
   const phoneId = process.env.WHATSAPP_PHONE_ID;
   const to = process.env.WHATSAPP_TO;
-  if (!token || !phoneId || !to) {
+  if (!isConfigured(token) || !isConfigured(phoneId) || !isConfigured(to)) {
     return { ok: false, skipped: true, reason: 'WhatsApp Cloud API no configurada' };
   }
   try {
