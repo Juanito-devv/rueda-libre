@@ -37,6 +37,16 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
     ''
   );
 
+  if (booking.numero) {
+    lines.push(`Reserva N°: ${booking.numero}`);
+  }
+
+  if (booking.formaPago) {
+    lines.push(
+      `Pago: ${booking.formaPago === 'comprobante' ? 'Comprobante de pago (Zelle / USDT / Pago Móvil / Transferencia)' : 'En el sitio (efectivo)'}`
+    );
+  }
+
   if (extrasList) {
     lines.push('Servicios Adicionales:', extrasList, '');
   }

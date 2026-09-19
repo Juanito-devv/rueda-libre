@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { extras } from '../../data/vehicles';
 import { fetchBcvRate, formatVes } from '../../utils/currency';
 
-export default function BookingSummary({ vehicle, booking, days, datesValid, total, onConfirm, onDownloadInvoice }) {
+export default function BookingSummary({ vehicle, booking, days, datesValid, total, onConfirm, onDownloadInvoice, extraValid = true, submitting = false, paymentLabel = '' }) {
   const emailFilled = booking.email.trim().length > 0;
   const emailValid = !emailFilled || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(booking.email.trim());
   const documentOk = booking.clientType === 'empresa' ? booking.document.trim().length > 0 : true;
@@ -13,7 +13,8 @@ export default function BookingSummary({ vehicle, booking, days, datesValid, tot
     booking.returnDate &&
     datesValid &&
     emailValid &&
-    documentOk;
+    documentOk &&
+    extraValid;
 
   const [vesRate, setVesRate] = useState(null);
 
@@ -74,6 +75,16 @@ export default function BookingSummary({ vehicle, booking, days, datesValid, tot
             <span>{booking.location}</span>
           </div>
         )}
+        {booking.formaPago && (
+          <div className="flex items-center gap-3 text-on-surface-variant">
+            <span className="material-symbols-outlined text-primary">payments</span>
+            <span>
+              {booking.formaPago === 'comprobante'
+                ? `Comprobante de pago${paymentLabel ? ` · ${paymentLabel}` : ''}`
+                : 'Pagar en el sitio (efectivo)'}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="border-t border-white/10 pt-4 space-y-2">
@@ -122,10 +133,10 @@ export default function BookingSummary({ vehicle, booking, days, datesValid, tot
 
       <button
         onClick={onConfirm}
-        disabled={!required}
+        disabled={!required || submitting}
         className="w-full mt-6 font-label-bold text-label-bold gold-btn px-6 py-4 rounded-xl text-lg tracking-widest font-black disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Confirmar y Enviar a WhatsApp
+        {submitting ? 'Registrando reserva…' : 'Confirmar Reserva'}
       </button>
 
       <button

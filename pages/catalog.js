@@ -2,8 +2,13 @@ import { useState, useEffect } from 'react';
 import Router, { useRouter } from 'next/router';
 import Header from '../src/components/layout/Header';
 import Footer from '../src/components/layout/Footer';
-import { vehicles } from '../src/data/vehicles';
 import Link from 'next/link';
+import { fetchVehicles } from '../src/lib/vehicles';
+
+export async function getServerSideProps() {
+  const { vehicles } = await fetchVehicles();
+  return { props: { vehicles } };
+}
 
 const categories = [
   { id: 'all', name: 'Todos' },
@@ -24,7 +29,7 @@ const segmentLabel = {
   empresa: 'Empresas',
 };
 
-export default function Catalog() {
+export default function Catalog({ vehicles }) {
   const router = useRouter();
   const [category, setCategory] = useState('all');
   const [segment, setSegment] = useState('all');

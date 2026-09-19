@@ -1,8 +1,22 @@
+import { useState } from 'react';
 import { extras } from '../../data/vehicles';
 
 const inputClass = "w-full bg-surface/50 border border-white/10 rounded-xl py-3 pl-4 pr-5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md backdrop-blur-sm placeholder:text-on-surface-variant/50";
 
-export default function BookingForm({ booking, onChange }) {
+const fileInputClass = "block w-full text-sm text-on-surface-variant file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-primary/10 file:text-primary file:cursor-pointer hover:file:bg-primary/20 cursor-pointer bg-surface/50 border border-white/10 rounded-xl transition-all";
+
+const UPLOAD_LABELS = {
+  comprobante: { label: 'Comprobante de Pago', hint: 'Captura o foto del pago realizado', required: true },
+  licencia: { label: 'Licencia de Conducir', hint: 'Frente de la licencia vigente', required: true },
+  cedula: { label: 'Cédula o RIF', hint: 'Foto del documento de identidad', required: true },
+};
+
+const MAX_MB = 5;
+const ACCEPTED = ['image/jpeg', 'image/png', 'image/webp'];
+
+export default function BookingForm({ booking, onChange, paymentMethods }) {
+  const [uploadError, setUploadError] = useState('');
+
   const handleChange = (field, value) => {
     onChange({ ...booking, [field]: value });
   };
@@ -13,6 +27,34 @@ export default function BookingForm({ booking, onChange }) {
       : [...booking.selectedExtras, extraId];
     handleChange('selectedExtras', selected);
   };
+
+  const selectFormaPago = (formaPago) => {
+    const next = { ...booking, formaPago };
+    if (formaPago === 'comprobante' && !next.pagoMetodoId && paymentMethods.length > 0) {
+      next.pagoMetodoId = paymentMethods[0].id;
+    }
+    handleChange('formaPago', next.formaPago);
+    handleChange('pagoMetodoId', next.pagoMetodoId);
+  };
+
+  const handleFile = (key, file) => {
+    if (!file) {
+      handleChange('files', { ...booking.files, [key]: null });
+      return;
+    }
+    if (!ACCEPTED.includes(file.type)) {
+      setUploadError(`${UPLOAD_LABELS[key].label}: formato no permitido. Usa JPG, PNG o WEBP.`);
+      return;
+    }
+    if (file.size > MAX_MB * 1024 * 1024) {
+      setUploadError(`${UPLOAD_LABELS[key].label}: el archivo supera los ${MAX_MB} MB.`);
+      return;
+    }
+    setUploadError('');
+    handleChange('files', { ...booking.files, [key]: file });
+  };
+
+  const selectedMethod = paymentMethods.find((m) => m.id === booking.pagoMetodoId);
 
   return (
     <div className="glass-panel-luxury rounded-3xl p-8 md:p-10 border border-primary/20 relative overflow-hidden">
@@ -129,6 +171,134 @@ export default function BookingForm({ booking, onChange }) {
             className={inputClass}
             placeholder="Dirección o punto de referencia"
           />
+        </div>
+
+        <div>
+          <label className="block text-on-surface-variant mb-3 font-label-bold text-label-bold tracking-widest text-xs">Forma de Pago</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button
+              type="button"
+              onClick={() => selectFormaPago('comprobante')}
+              className={`p-4 rounded-2xl border text-left transition-all ${
+                booking.formaPago === 'comprobante'
+                  ? 'border-primary bg-primary/10'
+                  : 'border-white/10 bg-white/5 hover:border-primary/40'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`material-symbols-outlined ${booking.formaPago === 'comprobante' ? 'text-primary' : 'text-on-surface-variant'}`}>receipt_long</span>
+                <div>
+                  <p className="text-white font-bold text-sm">Comprobante de pago</p>
+                  <p className="text-on-surface-variant text-xs">Zelle · USDT · Pago Móvil · Transferencia</p>
+                </div>
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => selectFormaPago('sitio')}
+              className={`p-4 rounded-2xl border text-left transition-all ${
+                booking.formaPago === 'sitio'
+                  ? 'border-primary bg-primary/10'
+                  : 'border-white/10 bg-white/5 hover:border-primary/40'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className={`material-symbols-outlined ${booking.formaPago === 'sitio' ? 'text-primary' : 'text-on-surface-variant'}`}>payments</span>
+                <div>
+                  <p className="text-white font-bold text-sm">Pagar en el sitio</p>
+                  <p className="text-on-surface-variant text-xs">Efectivo al retirar el vehículo</p>
+                </div>
+              </div>
+            </button>
+          </div>
+
+          {booking.formaPago === 'comprobante' && (
+            <div className="mt-5 space-y-5">
+              {paymentMethods.length > 0 && (
+                <div>
+                  <label className="block text-on-surface-variant mb-2 font-label-bold text-label-bold tracking-widest text-xs">Elige el método de pago</label>
+                  <div className="space-y-2">
+                    {paymentMethods.map((m) => (
+                      <label
+                        key={m.id}
+                        className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${
+                          booking.pagoMetodoId === m.id
+                            ? 'border-primary bg-primary/10'
+                            : 'border-white/10 bg-surface/50 hover:border-primary/40'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="pagoMetodo"
+                          checked={booking.pagoMetodoId === m.id}
+                          onChange={() => handleChange('pagoMetodoId', m.id)}
+                          className="mt-1 accent-primary"
+                        />
+                        <div className="flex-1">
+                          <p className="text-white font-bold">{m.metodo_pago}</p>
+                          {m.descripcion && <p className="text-on-surface-variant text-sm">{m.descripcion}</p>}
+                        </div>
+                      </label>
+                    ))}
+                  </div>
+                  {selectedMethod && selectedMethod.descripcion && (
+                    <p className="mt-3 text-sm text-primary flex items-center gap-2">
+                      <span className="material-symbols-outlined text-base">info</span>
+                      {selectedMethod.descripcion}
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <div className="space-y-5">
+                {Object.keys(UPLOAD_LABELS).map((key) => (
+                  <div key={key}>
+                    <label className="block text-on-surface-variant mb-2 font-label-bold text-label-bold tracking-widest text-xs">
+                      {UPLOAD_LABELS[key].label} {UPLOAD_LABELS[key].required && <span className="text-primary">*</span>}
+                    </label>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      onChange={(e) => handleFile(key, e.target.files[0])}
+                      className={fileInputClass}
+                    />
+                    {booking.files[key] ? (
+                      <p className="mt-2 text-xs text-primary flex items-center gap-1">
+                        <span className="material-symbols-outlined text-sm">check_circle</span>
+                        {booking.files[key].name}
+                      </p>
+                    ) : (
+                      <p className="mt-2 text-xs text-on-surface-variant/60">{UPLOAD_LABELS[key].hint}. Máx. {MAX_MB} MB.</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-sm text-on-surface-variant/70 bg-surface/50 border border-white/10 rounded-xl p-4">
+                Realiza el pago por el método elegido y adjunta el comprobante junto con tu licencia y cédula.
+                Nuestro equipo verificará los datos y confirmará tu reserva por WhatsApp.
+              </p>
+            </div>
+          )}
+
+          {booking.formaPago === 'sitio' && (
+            <div className="mt-5 p-4 bg-surface/50 border border-white/10 rounded-xl text-sm text-on-surface-variant">
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-primary">timer</span>
+                <p>
+                  Apartamos el vehículo por <span className="text-white font-semibold">5 horas</span> para que completes
+                  el pago en el sitio. Si no se confirma a tiempo, la reserva se libera automáticamente.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {uploadError && (
+            <p className="mt-3 text-sm text-error flex items-center gap-2">
+              <span className="material-symbols-outlined text-base">warning</span>
+              {uploadError}
+            </p>
+          )}
         </div>
 
         <div>

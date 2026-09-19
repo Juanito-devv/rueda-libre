@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/vencidas",
+      "schedule": "*/5 * * * *"
+    }
+  ]
+}
