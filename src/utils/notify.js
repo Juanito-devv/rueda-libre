@@ -39,7 +39,7 @@ export function buildOwnerReservationMessage({ reservation, vehicle }) {
     .map((id) => `  - ${id}`)
     .join('\n');
   const lines = [
-    'RUEDA LIBRE · NUEVA RESERVA',
+    'GUZFAL C.A. · NUEVA RESERVA',
     sep,
     `N° ${reservation.numero}`,
     `Vehículo: ${vehicle ? vehicle.name : reservation.vehiculo}`,
@@ -66,7 +66,7 @@ export function buildOwnerReservationMessage({ reservation, vehicle }) {
 
 export function buildExpiryOwnerMessage({ reservation, vehicle }) {
   const lines = [
-    'RUEDA LIBRE · RESERVA VENCIDA',
+    'GUZFAL C.A. · RESERVA VENCIDA',
     sep,
     `N° ${reservation.numero}`,
     `Vehículo: ${vehicle ? vehicle.name : reservation.vehiculo}`,

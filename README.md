@@ -1,8 +1,8 @@
-# Rueda Libre — Alquiler de Vehículos
+# Guzfal C.A. — Alquiler de Vehículos
 
-Sitio web comercial de **Rueda Libre**, una empresa de alquiler de vehículos por día en Caracas, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
+Sitio web comercial de **Guzfal C.A.**, una empresa de alquiler de vehículos por día en Caracas, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
 
-**Demo:** https://rueda-libre1.vercel.app/
+**Sitio:** https://rueda-libre1.vercel.app/
 
 ---
 
@@ -39,10 +39,10 @@ Edita **`src/config/site.js`**: es la fuente única de número de WhatsApp, corr
 
 ```js
 export const SITE = {
-  name: 'Rueda Libre',
+  name: 'Guzfal C.A.',
   whatsappNumber: '584129706050',          // número con código de país, sin '+'
   whatsappDisplay: '+58 412-9706050',
-  email: 'info@ruedalibre.com',
+  email: 'guzfalca1@gmail.com',
   location: 'Caracas, Venezuela',
   deliveryCity: 'Caracas, La California',  // se muestra en el mensaje de WhatsApp
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://rueda-libre1.vercel.app',

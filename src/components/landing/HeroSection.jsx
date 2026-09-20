@@ -37,7 +37,7 @@ export default function HeroSection() {
 
       <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-20 w-full flex flex-col md:flex-row items-center justify-between gap-stack-lg">
         <div className="w-full md:w-1/2 space-y-8 text-center md:text-left relative">
-          <div className="absolute -left-10 -top-10 text-9xl font-black text-white/5 select-none -z-10">RL</div>
+          <div className="absolute -left-10 -top-10 text-9xl font-black text-white/5 select-none -z-10">GZ</div>
           <h1 className="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg leading-none">
             Muévete con <br /><span className="gradient-text">confianza</span>
           </h1>

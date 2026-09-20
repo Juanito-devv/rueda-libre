@@ -9,7 +9,7 @@ export default function Document() {
   return (
     <Html lang="es" className="dark scroll-smooth">
       <Head>
-        <title>Rueda Libre - Muévete con Confianza</title>
+        <title>{`${SITE.name} - ${SITE.tagline}`}</title>
         <meta name="description" content={SITE.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#0a0c0d" />

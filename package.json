@@ -1,10 +1,10 @@
 {
-  "name": "rueda-libre-rental",
-  "version": "1.0.1",
-  "description": "Sitio web de Rueda Libre: alquiler de vehículos por día en Caracas, Venezuela. Next.js + Tailwind CSS con export estático.",
+  "name": "guzfal-rental",
+  "version": "1.0.2",
+  "description": "Sitio web de Guzfal C.A.: alquiler de vehículos por día en Caracas, Venezuela. Next.js + Tailwind CSS con export estático.",
   "private": true,
   "keywords": [
-    "rueda libre",
+    "guzfal",
     "alquiler de vehículos",
     "rent a car",
     "caracas",

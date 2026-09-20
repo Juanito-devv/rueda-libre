@@ -23,7 +23,7 @@ function uid() {
 async function makeNumero() {
   const year = new Date().getFullYear();
   for (let i = 0; i < 5; i++) {
-    const numero = `RL-${year}-${uid()}`;
+    const numero = `GZ-${year}-${uid()}`;
     const { data } = await supabaseAdmin()
       .from('reservas')
       .select('id')
@@ -31,7 +31,7 @@ async function makeNumero() {
       .maybeSingle();
     if (!data) return numero;
   }
-  return `RL-${year}-${Date.now().toString(36).toUpperCase()}`;
+  return `GZ-${year}-${Date.now().toString(36).toUpperCase()}`;
 }
 
 async function uploadReservationFile(folder, filename, base64, contentType) {

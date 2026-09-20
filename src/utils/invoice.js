@@ -32,7 +32,7 @@ export async function generateInvoicePdf({ vehicle, booking, total, days }) {
   const pageH = doc.internal.pageSize.getHeight();
   const margin = 14;
 
-  const invoiceNumber = `RL-${String(vehicle.id).padStart(2, '0')}-${Date.now().toString().slice(-4)}`;
+  const invoiceNumber = `GZ-${String(vehicle.id).padStart(2, '0')}-${Date.now().toString().slice(-4)}`;
 
   doc.setFillColor(242, 202, 80);
   doc.rect(0, 0, pageW, 38, 'F');
@@ -185,8 +185,9 @@ export async function generateInvoicePdf({ vehicle, booking, total, days }) {
 
   doc.setFontSize(8.5);
   doc.setTextColor(150, 150, 150);
+  const siteHost = SITE.baseUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
   doc.text(`${SITE.name} · ${SITE.location}`, pageW - margin, pageH - 12, { align: 'right' });
-  doc.text('Documento generado automáticamente por ruedalibre.com', pageW - margin, pageH - 8, { align: 'right' });
+  doc.text(`Documento generado automáticamente por ${siteHost}`, pageW - margin, pageH - 8, { align: 'right' });
 
   doc.save(`Factura-${invoiceNumber}.pdf`);
 }
