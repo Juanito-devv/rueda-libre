@@ -7,14 +7,14 @@ export default function Footer() {
   return (
     <footer className="w-full py-20 bg-background max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-12 relative z-10">
       <div className="col-span-1 md:col-span-2">
-        <h4 className="font-headline-xl text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-orange mb-6 tracking-tighter">
-GUZFAL
+<h4 className="font-headline-xl text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-orange mb-6 tracking-tighter">
+          GuzfalC.A
         </h4>
         <p className="font-body-md text-body-md text-on-surface-variant mb-8 max-w-sm leading-relaxed">
           Muévete con confianza. Tu mejor opción para alquilar vehículos por día.
         </p>
         <p className="font-label-bold text-xs text-on-surface-variant/40 tracking-widest">
-          © {currentYear} GUZFAL, C.A. TODOS LOS DERECHOS RESERVADOS.
+          © {currentYear} GuzfalC.A. TODOS LOS DERECHOS RESERVADOS.
         </p>
       </div>
 

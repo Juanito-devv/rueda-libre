@@ -1,6 +1,6 @@
-# Guzfal C.A. — Alquiler de Vehículos
+# GuzfalC.A — Alquiler de Vehículos
 
-Sitio web comercial de **Guzfal C.A.**, una empresa de alquiler de vehículos por día en Caracas, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
+Sitio web comercial de **GuzfalC.A**, una empresa de alquiler de vehículos por día en Caracas, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
 
 **Sitio:** https://rueda-libre1.vercel.app/
 
@@ -39,7 +39,7 @@ Edita **`src/config/site.js`**: es la fuente única de número de WhatsApp, corr
 
 ```js
 export const SITE = {
-  name: 'Guzfal C.A.',
+  name: 'GuzfalC.A',
   whatsappNumber: '584129706050',          // número con código de país, sin '+'
   whatsappDisplay: '+58 412-9706050',
   email: 'guzfalca1@gmail.com',

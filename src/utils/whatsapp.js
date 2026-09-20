@@ -13,7 +13,7 @@ export function generateWhatsAppMessage(vehicle, booking, total) {
   const sep = '──────────────────────────────────';
 
   const lines = [
-    'GUZFAL C.A.',
+    'GuzfalC.A',
     'Solicitud de Reserva',
     sep,
     '',

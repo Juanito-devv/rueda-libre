@@ -1,7 +1,7 @@
 {
   "name": "guzfal-rental",
   "version": "1.0.2",
-  "description": "Sitio web de Guzfal C.A.: alquiler de vehículos por día en Caracas, Venezuela. Next.js + Tailwind CSS con export estático.",
+  "description": "Sitio web de GuzfalC.A: alquiler de vehículos por día en Caracas, Venezuela. Next.js + Tailwind CSS con export estático.",
   "private": true,
   "keywords": [
     "guzfal",

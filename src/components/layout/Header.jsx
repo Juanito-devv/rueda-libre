@@ -18,7 +18,7 @@ export default function Header() {
           href="/"
           className="font-display-lg-mobile md:text-3xl text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent-orange tracking-tighter"
         >
-          GUZFAL
+          GuzfalC.A
         </Link>
 
         <div className="hidden lg:flex items-center space-x-10">
