@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { getWhatsAppUrl } from '../../utils/whatsapp';
+import { SITE } from '../../config/site';
+import InstagramIcon from '../ui/InstagramIcon';
 
 export default function CTASection() {
   return (
@@ -30,6 +32,15 @@ export default function CTASection() {
           >
             VER CATÁLOGO
           </Link>
+          <a
+            href={SITE.instagramUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white font-label-bold text-label-bold px-10 py-5 rounded-full hover:scale-105 transition-all shadow-[0_0_30px_rgba(221,42,123,0.35)] hover:shadow-[0_0_40px_rgba(221,42,123,0.55)] font-black tracking-widest w-full sm:w-auto"
+          >
+            <InstagramIcon size={20} />
+            @{SITE.instagramHandle}
+          </a>
         </div>
       </div>
     </section>

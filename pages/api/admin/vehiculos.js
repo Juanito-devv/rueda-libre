@@ -2,6 +2,7 @@ import { supabaseAdmin } from '../../../src/lib/supabaseAdmin';
 import { requireAdmin } from '../../../src/lib/adminSession';
 
 const CATEGORIES = ['sedan', 'suv', 'camioneta', 'van'];
+const FUELS = ['Gasolina', 'Diésel', 'Eléctrico', 'Híbrido'];
 
 function validateInput(b) {
   const errors = [];
@@ -14,12 +15,38 @@ function validateInput(b) {
   if (b.categoria !== undefined && !CATEGORIES.includes(b.categoria)) {
     errors.push('Categoría inválida (sedan, suv, camioneta, van)');
   }
+  if (b.combustible !== undefined && !FUELS.includes(b.combustible)) {
+    errors.push('Combustible inválido (Gasolina, Diésel, Eléctrico, Híbrido)');
+  }
+  if (b.cargo_kg !== undefined && (!Number.isFinite(Number(b.cargo_kg)) || Number(b.cargo_kg) <= 0)) {
+    errors.push('Capacidad de carga inválida');
+  }
   const bools = ['activo', 'bloqueado'];
   for (const k of bools) {
     if (b[k] !== undefined && typeof b[k] !== 'boolean') errors.push(`El campo ${k} debe ser booleano`);
   }
   if (b.segmentos !== undefined && !Array.isArray(b.segmentos)) errors.push('segmentos debe ser un arreglo');
   return errors;
+}
+
+async function insertVehicle(sb, row) {
+  const { data, error } = await sb.from('vehiculos').insert(row).select().single();
+  if (error && /column .* does not exist/i.test(error.message)) {
+    const { combustible, cargo_kg, ...base } = row;
+    const retry = await sb.from('vehiculos').insert(base).select().single();
+    return retry;
+  }
+  return { data, error };
+}
+
+async function updateVehicle(sb, update, id) {
+  const { data, error } = await sb.from('vehiculos').update(update).eq('id_vehiculo', id).select().single();
+  if (error && /column .* does not exist/i.test(error.message)) {
+    const { combustible, cargo_kg, ...base } = update;
+    const retry = await sb.from('vehiculos').update(base).eq('id_vehiculo', id).select().single();
+    return retry;
+  }
+  return { data, error };
 }
 
 export default async function handler(req, res) {
@@ -53,8 +80,10 @@ export default async function handler(req, res) {
       activo: b.activo ?? true,
       bloqueado: b.bloqueado ?? false,
       segmentos: b.segmentos || ['particular', 'empresa'],
+      combustible: b.combustible || 'Gasolina',
+      cargo_kg: Number(b.cargo_kg) || 400,
     };
-    const { data, error: e } = await sb.from('vehiculos').insert(row).select().single();
+    const { data, error: e } = await insertVehicle(sb, row);
     if (e) return res.status(500).json({ error: e.message });
     return res.status(201).json({ vehicle: data });
   }
@@ -75,7 +104,9 @@ export default async function handler(req, res) {
     if (changes.activo !== undefined) update.activo = Boolean(changes.activo);
     if (changes.bloqueado !== undefined) update.bloqueado = Boolean(changes.bloqueado);
     if (changes.segmentos !== undefined) update.segmentos = changes.segmentos;
-    const { data, error: e } = await sb.from('vehiculos').update(update).eq('id_vehiculo', id).select().single();
+    if (changes.combustible !== undefined) update.combustible = changes.combustible;
+    if (changes.cargo_kg !== undefined) update.cargo_kg = Number(changes.cargo_kg);
+    const { data, error: e } = await updateVehicle(sb, update, id);
     if (e) return res.status(500).json({ error: e.message });
     return res.status(200).json({ vehicle: data });
   }

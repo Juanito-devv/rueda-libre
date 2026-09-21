@@ -6,16 +6,26 @@ const TYPE_LABEL = { sedan: 'Sedán', suv: 'SUV', camioneta: 'Camioneta', van: '
 const FUEL_BY_CATEGORY = { sedan: 'Gasolina', suv: 'Gasolina', camioneta: 'Diésel', van: 'Diésel' };
 const CARGO_BY_CATEGORY = { sedan: '400 kg', suv: '600 kg', camioneta: '1,000 kg', van: '2,500 kg' };
 
+function formatCargo(cargoKg) {
+  const kg = Number(cargoKg);
+  if (!kg || Number.isNaN(kg)) return null;
+  return `${kg.toLocaleString('es-VE')} kg`;
+}
+
 export function rowToVehicle(row) {
+  const fuelFromDb =
+    row.combustible && !/fallback/i.test(String(row.combustible))
+      ? row.combustible
+      : FUEL_BY_CATEGORY[row.categoria] || 'Gasolina';
   return {
     id: row.id_vehiculo,
     name: `${row.marca} ${row.modelo}`.trim(),
     category: row.categoria,
     type: TYPE_LABEL[row.categoria] || row.categoria || 'Vehículo',
     transmission: row.transmision,
-    fuel: FUEL_BY_CATEGORY[row.categoria] || 'Gasolina',
+    fuel: fuelFromDb,
     capacity: row.capacidad,
-    cargo: CARGO_BY_CATEGORY[row.categoria] || '—',
+    cargo: formatCargo(row.cargo_kg) || CARGO_BY_CATEGORY[row.categoria] || '—',
     dailyRate: Number(row.precio_dia) || 0,
     image: (() => {
       const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
@@ -83,6 +93,22 @@ export async function fetchPaymentMethods() {
     return data || [];
   } catch (e) {
     console.error('[ajustes] DB no disponible:', e.message);
+    return [];
+  }
+}
+
+const ACTIVE_STATES = ['pendiente', 'confirmada', 'en_curso', 'revision'];
+
+export async function fetchActiveReservationRanges() {
+  try {
+    const { data, error } = await supabaseAdmin()
+      .from('reservas')
+      .select('id, vehiculo, pickup_date, return_date, estado')
+      .in('estado', ACTIVE_STATES);
+    if (error) throw error;
+    return data || [];
+  } catch (e) {
+    console.error('[reservas] DB no disponible:', e.message);
     return [];
   }
 }

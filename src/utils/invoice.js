@@ -191,3 +191,195 @@ export async function generateInvoicePdf({ vehicle, booking, total, days }) {
 
   doc.save(`Factura-${invoiceNumber}.pdf`);
 }
+
+export async function generateReservationSummaryPdf({ vehicle, booking, total, days, numero, estado }) {
+  const { default: jsPDF } = await import('jspdf');
+  const { default: autoTable } = await import('jspdf-autotable');
+
+  const bcvRate = await fetchBcvRate();
+
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const margin = 14;
+
+  doc.setFillColor(242, 202, 80);
+  doc.rect(0, 0, pageW, 38, 'F');
+  doc.setFillColor(20, 23, 25);
+  doc.rect(0, 38, pageW, 1.5, 'F');
+
+  doc.setTextColor(20, 23, 25);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(22);
+  doc.text(SITE.name.toUpperCase(), margin, 18);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10.5);
+  doc.text(SITE.tagline, margin, 25);
+  doc.setFontSize(8.5);
+  doc.setTextColor(64, 50, 0);
+  doc.text(`${SITE.location} · ${SITE.whatsappDisplay}`, margin, 32);
+
+  doc.setTextColor(20, 23, 25);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.text('RESUMEN DE RESERVA', pageW - margin, 16, { align: 'right' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.text(`Fecha de emisión: ${today()}`, pageW - margin, 23, { align: 'right' });
+  doc.setFontSize(9);
+  doc.setTextColor(120, 120, 120);
+  doc.text(SITE.email, pageW - margin, 34, { align: 'right' });
+
+  let y = 48;
+
+  doc.setFillColor(242, 202, 80);
+  doc.roundedRect(margin, y - 12, pageW - margin * 2, 24, 2, 2, 'F');
+  doc.setTextColor(20, 23, 25);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  doc.text('CÓDIGO DE RESERVA', pageW / 2, y - 4, { align: 'center' });
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(19);
+  doc.text(numero || '—', pageW / 2, y + 7, { align: 'center' });
+  y += 26;
+
+  doc.setFillColor(20, 23, 25);
+  doc.rect(margin, y - 5, pageW - margin * 2, 8, 'F');
+  doc.setTextColor(242, 202, 80);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('DATOS DEL CLIENTE', margin + 3, y);
+  y += 12;
+
+  doc.setFontSize(10);
+  doc.setTextColor(30, 30, 30);
+  doc.setFont('helvetica', 'bold');
+  doc.text(booking.name || '—', margin, y);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9.5);
+  doc.text(`${clientTypeLabel(booking.clientType)}`, pageW - margin, y, { align: 'right' });
+  y += 6;
+  doc.text(`Documento: ${booking.document || '—'}`, margin + 2, y);
+  doc.text(`${booking.phone || '—'}`, pageW - margin, y, { align: 'right' });
+  y += 6;
+  doc.text(`${booking.email || '—'}`, margin + 2, y);
+  y += 6;
+  doc.text(`Ubicación de entrega: ${booking.location || '—'}`, margin + 2, y);
+  y += 6;
+
+  doc.setFontSize(9.5);
+  doc.text(
+    `Período: ${formatDate(booking.pickupDate)}  →  ${formatDate(booking.returnDate)}  (${days} día${days === 1 ? '' : 's'})`,
+    margin,
+    y
+  );
+  y += 8;
+
+  const extraRows = booking.selectedExtras
+    .map((extraId) => {
+      const extra = extras.find((e) => e.id === extraId);
+      return extra
+        ? [extra.name, 'Servicio adicional', money(extra.price), String(days), money(extra.price * days)]
+        : null;
+    })
+    .filter(Boolean);
+
+  autoTable(doc, {
+    startY: y,
+    margin: { left: margin, right: margin },
+    head: [['Concepto', 'Detalle', 'Tarifa diaria ($)', 'Días', 'Importe ($)']],
+    body: [
+      [vehicle.name, vehicle.type, money(vehicle.dailyRate), String(days), money(vehicle.dailyRate * days)],
+      ...extraRows,
+    ],
+    foot: [['', '', '', 'TOTAL', money(total)]],
+    theme: 'striped',
+    headStyles: {
+      fillColor: [20, 23, 25],
+      textColor: [242, 202, 80],
+      fontStyle: 'bold',
+      fontSize: 9,
+    },
+    footStyles: {
+      fillColor: [242, 202, 80],
+      textColor: [20, 23, 25],
+      fontStyle: 'bold',
+      fontSize: 11,
+    },
+    bodyStyles: { fontSize: 9.5, textColor: [30, 30, 30] },
+    columnStyles: {
+      0: { cellWidth: 62 },
+      1: { cellWidth: 54 },
+      2: { cellWidth: 30, halign: 'right' },
+      3: { cellWidth: 18, halign: 'center' },
+      4: { cellWidth: 30, halign: 'right' },
+    },
+  });
+
+  const tableEnd = doc.lastAutoTable ? doc.lastAutoTable.finalY + 8 : y + 10;
+  let ny = tableEnd;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.setTextColor(20, 23, 25);
+  doc.text('Forma de pago: ', margin, ny);
+  doc.setFont('helvetica', 'normal');
+  doc.text(
+    booking.formaPago === 'comprobante' ? 'Comprobante de pago' : 'En el sitio (efectivo, apartado 5 horas)',
+    margin + 32,
+    ny
+  );
+  ny += 7;
+
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(20, 23, 25);
+  doc.text('Estado de la reserva: ', margin, ny);
+  doc.setFont('helvetica', 'normal');
+  doc.text(estado || 'Pendiente', margin + 34, ny);
+  ny += 10;
+
+  if (bcvRate) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(20, 23, 25);
+    doc.text(`Equivalente en bolívares: ${formatVes(bcvRate * total)}`, margin, ny);
+    ny += 6;
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(90, 90, 90);
+    doc.text(
+      `Tasa BCV del día (oficial): 1 USD = Bs. ${bcvRate.toLocaleString('es-VE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}`,
+      margin,
+      ny
+    );
+    ny += 8;
+  }
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(90, 90, 90);
+  doc.text(
+    'Guarda este resumen con tu código de reserva. Muéstralo o menciónalo al momento de la entrega.',
+    margin,
+    ny
+  );
+  ny += 5;
+  doc.text(
+    'La reserva queda sujeta a la confirmación de disponibilidad y a la verificación del pago por WhatsApp.',
+    margin,
+    ny
+  );
+  ny += 5;
+  doc.text(`Contacto: ${SITE.whatsappDisplay} · ${SITE.email}`, margin, ny);
+
+  doc.setFontSize(8.5);
+  doc.setTextColor(150, 150, 150);
+  const siteHost = SITE.baseUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+  doc.text(`${SITE.name} · ${SITE.location}`, pageW - margin, pageH - 12, { align: 'right' });
+  doc.text(`Documento generado automáticamente por ${siteHost}`, pageW - margin, pageH - 8, { align: 'right' });
+
+  doc.save(`Reserva-${numero || 'sin-numero'}.pdf`);
+}

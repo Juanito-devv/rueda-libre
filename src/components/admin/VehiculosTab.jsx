@@ -11,6 +11,8 @@ const emptyForm = {
   transmision: 'Automática',
   imagen: '',
   activo: true,
+  combustible: 'Gasolina',
+  cargo_kg: 400,
 };
 
 export default function VehiculosTab({ token, isAdmin }) {
@@ -100,7 +102,14 @@ export default function VehiculosTab({ token, isAdmin }) {
           <option value="van">Van</option>
         </select>
         <input className={inputClass} type="number" value={form.precio_dia} onChange={(e) => setForm({ ...form, precio_dia: e.target.value })} placeholder="Precio USD/día" />
-        <input className={inputClass} type="number" value={form.capacidad} onChange={(e) => setForm({ ...form, capacidad: e.target.value })} placeholder="Capacidad" />
+        <input className={inputClass} type="number" value={form.capacidad} onChange={(e) => setForm({ ...form, capacidad: e.target.value })} placeholder="Pasajeros" />
+        <select className={inputClass} value={form.combustible} onChange={(e) => setForm({ ...form, combustible: e.target.value })}>
+          <option value="Gasolina">Gasolina</option>
+          <option value="Diésel">Diésel</option>
+          <option value="Eléctrico">Eléctrico</option>
+          <option value="Híbrido">Híbrido</option>
+        </select>
+        <input className={inputClass} type="number" value={form.cargo_kg} onChange={(e) => setForm({ ...form, cargo_kg: e.target.value })} placeholder="Carga (kg)" />
         <input className={inputClass} value={form.transmision} onChange={(e) => setForm({ ...form, transmision: e.target.value })} placeholder="Transmisión" />
         <input className={`${inputClass} col-span-2`} value={form.imagen} onChange={(e) => setForm({ ...form, imagen: e.target.value })} placeholder="Imagen (ruta, ej. /images/vehicles/kia-rio.jpg)" />
       </div>
@@ -137,7 +146,7 @@ export default function VehiculosTab({ token, isAdmin }) {
                   {v.marca} {v.modelo}
                   {v.bloqueado && <span className="text-accent-orange text-xs ml-1">· BLOQUEADO</span>}
                 </p>
-                <p className="text-on-surface-variant text-sm">${v.precio_dia}/día · {v.capacidad} pasajeros · {v.transmision}</p>
+                <p className="text-on-surface-variant text-sm">${v.precio_dia}/día · {v.capacidad} pasajeros · {v.transmision} · {v.combustible || 'Gasolina'} · {v.cargo ? v.cargo : `${Number(v.cargo_kg) || 400} kg`}</p>
               </div>
               <div className="flex items-center gap-4">
                 <label className="flex items-center gap-2 text-sm text-on-surface-variant">

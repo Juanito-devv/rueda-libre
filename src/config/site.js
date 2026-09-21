@@ -9,4 +9,6 @@ export const SITE = {
   location: 'Caracas, Venezuela',
   deliveryCity: 'Caracas, La California',
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://rueda-libre1.vercel.app',
+  instagramHandle: 'guzfalca',
+  instagramUrl: 'https://www.instagram.com/guzfalca/',
 };

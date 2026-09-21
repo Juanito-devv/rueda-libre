@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { SITE } from '../../config/site';
+import InstagramIcon from '../ui/InstagramIcon';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -62,6 +63,22 @@ export default function Footer() {
               <span className="material-symbols-outlined text-primary text-sm">location_on</span>
             </div>
             {SITE.location}
+          </li>
+          <li>
+            <a
+              href={SITE.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 text-on-surface-variant font-body-md text-body-md hover:text-white transition-colors group"
+            >
+              <div className="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-white/5 group-hover:border-primary/40 transition-colors">
+                <InstagramIcon size={16} className="text-primary" />
+              </div>
+              <span>
+                Instagram ·{' '}
+                <span className="text-primary font-bold">@{SITE.instagramHandle}</span>
+              </span>
+            </a>
           </li>
         </ul>
       </div>

@@ -4,7 +4,8 @@ import Footer from '../src/components/layout/Footer';
 import { supabaseClient } from '../src/lib/supabaseClient';
 import ReservasTab from '../src/components/admin/ReservasTab';
 import VehiculosTab from '../src/components/admin/VehiculosTab';
-import PagosTab from '../src/components/admin/PagosTab';
+import CalendarioTab from '../src/components/admin/CalendarioTab';
+import DashboardTab from '../src/components/admin/DashboardTab';
 
 const inputClass = "w-full bg-surface/50 border border-white/10 rounded-xl py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md backdrop-blur-sm placeholder:text-on-surface-variant/50";
 
@@ -57,18 +58,28 @@ export default function Admin() {
     setRole(null);
   };
 
+  const tabs = [
+    { id: 'reservas', name: 'Reservas', adminOnly: false },
+    { id: 'revision', name: 'Revisión', adminOnly: false },
+    { id: 'calendario', name: 'Calendario', adminOnly: false },
+    { id: 'flota', name: 'Flota', adminOnly: true },
+    { id: 'dashboard', name: 'Dashboard', adminOnly: true },
+  ];
+
+  const visibleTabs = tabs.filter((t) => !t.adminOnly || role === 'admin');
+
   return (
     <div className="min-h-screen">
       <Header />
 
       <main className="py-section-gap">
-        <div className="max-w-5xl mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className="max-w-6xl mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="text-center mb-12">
             <h1 className="font-headline-xl text-headline-xl mb-3">
               Panel de <span className="gradient-text">Gestión</span>
             </h1>
             <p className="text-on-surface-variant text-lg uppercase tracking-widest text-sm">
-              Reservas · Flota · Pagos
+              {role === 'admin' ? 'Reservas · Revisión · Calendario · Flota · Dashboard' : 'Reservas · Revisión · Calendario'}
             </p>
           </div>
 
@@ -106,48 +117,33 @@ export default function Admin() {
             <>
               <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
                 <div className="flex flex-wrap gap-3">
-                  <button
-                    onClick={() => setTab('reservas')}
-                    className={`px-6 py-2.5 rounded-full font-label-bold text-label-bold text-sm tracking-widest transition-all ${
-                      tab === 'reservas'
-                        ? 'bg-gradient-to-r from-primary to-accent-orange text-surface shadow-lg'
-                        : 'bg-surface/50 border border-white/10 text-on-surface-variant hover:text-white'
-                    }`}
-                  >
-                    Reservas
-                  </button>
-                  <button
-                    onClick={() => setTab('flota')}
-                    className={`px-6 py-2.5 rounded-full font-label-bold text-label-bold text-sm tracking-widest transition-all ${
-                      tab === 'flota'
-                        ? 'bg-gradient-to-r from-primary to-accent-orange text-surface shadow-lg'
-                        : 'bg-surface/50 border border-white/10 text-on-surface-variant hover:text-white'
-                    }`}
-                  >
-                    Flota
-                  </button>
-                  <button
-                    onClick={() => setTab('pagos')}
-                    className={`px-6 py-2.5 rounded-full font-label-bold text-label-bold text-sm tracking-widest transition-all ${
-                      tab === 'pagos'
-                        ? 'bg-gradient-to-r from-primary to-accent-orange text-surface shadow-lg'
-                        : 'bg-surface/50 border border-white/10 text-on-surface-variant hover:text-white'
-                    }`}
-                  >
-                    Datos de Pago
-                  </button>
+                  {visibleTabs.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => setTab(t.id)}
+                      className={`px-6 py-2.5 rounded-full font-label-bold text-label-bold text-sm tracking-widest transition-all ${
+                        tab === t.id
+                          ? 'bg-gradient-to-r from-primary to-accent-orange text-surface shadow-lg'
+                          : 'bg-surface/50 border border-white/10 text-on-surface-variant hover:text-white'
+                      }`}
+                    >
+                      {t.name}
+                    </button>
+                  ))}
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="px-5 py-2.5 rounded-full border border-white/20 text-on-surface-variant text-sm hover:text-white hover:border-white/40 transition-colors"
+                  className="gold-btn px-6 py-2.5 rounded-full font-label-bold text-label-bold text-sm tracking-widest font-black"
                 >
                   Cerrar sesión
                 </button>
               </div>
 
               {tab === 'reservas' && <ReservasTab token={session.access_token} onRole={(r) => setRole(r)} />}
+              {tab === 'revision' && <ReservasTab token={session.access_token} onRole={(r) => setRole(r)} initialEstado="revision" />}
+              {tab === 'calendario' && <CalendarioTab token={session.access_token} onRole={(r) => setRole(r)} />}
               {tab === 'flota' && <VehiculosTab token={session.access_token} isAdmin={role === 'admin'} />}
-              {tab === 'pagos' && <PagosTab token={session.access_token} isAdmin={role === 'admin'} />}
+              {tab === 'dashboard' && <DashboardTab token={session.access_token} onRole={(r) => setRole(r)} />}
             </>
           )}
         </div>

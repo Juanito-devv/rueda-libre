@@ -3,6 +3,7 @@ import { getBookingDays } from '../../src/utils/booking';
 import { extras } from '../../src/data/vehicles';
 import { rowToVehicle } from '../../src/lib/vehicles';
 import { sendOwnerNotification, buildOwnerReservationMessage } from '../../src/utils/notify';
+import { isRangeFree } from '../../src/utils/disponibilidad';
 
 export const config = {
   api: { bodyParser: { sizeLimit: '30mb' } },
@@ -89,6 +90,19 @@ export default async function handler(req, res) {
     if (errV) throw errV;
     if (!vehiculo || !vehiculo.activo || vehiculo.bloqueado) {
       return res.status(404).json({ error: 'El vehículo no está disponible en este momento.' });
+    }
+
+    const { data: solapadas, error: errO } = await sb
+      .from('reservas')
+      .select('pickup_date, return_date')
+      .eq('vehiculo', vehicle_id)
+      .in('estado', ['pendiente', 'confirmada', 'en_curso', 'revision'])
+      .limit(200);
+    if (errO) throw errO;
+    if (!isRangeFree(pickupDate, returnDate, solapadas || [])) {
+      return res.status(409).json({
+        error: 'Ese vehículo ya tiene una reserva en el rango de fechas seleccionado (incluye las 24 horas de revisión tras la devolución).',
+      });
     }
 
     const extraIds = Array.isArray(selectedExtras) ? selectedExtras : [];
