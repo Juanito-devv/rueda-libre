@@ -410,8 +410,8 @@ export default function Booking({ vehicle: initialVehicle, vehicles, paymentMeth
           )}
 
           {step < 5 && (
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-              <div className={`${step === 1 ? 'lg:col-span-3 lg:order-1' : 'lg:col-span-3 lg:order-1'}`}>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+              <div className={'md:col-span-3 md:order-1'}>
                 {step === 1 ? (
                   <div className="glass-panel-luxury rounded-3xl p-8 md:p-10 border border-primary/20 relative overflow-hidden space-y-6">
                     <div className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-br from-primary to-accent-orange rounded-full blur-3xl opacity-20"></div>
@@ -506,7 +506,7 @@ export default function Booking({ vehicle: initialVehicle, vehicles, paymentMeth
                 )}
               </div>
 
-              <div className="lg:col-span-2">
+              <div className="md:col-span-2 md:order-2">
                 <BookingSummary
                   vehicle={vehicle}
                   booking={booking}
@@ -523,7 +523,7 @@ export default function Booking({ vehicle: initialVehicle, vehicles, paymentMeth
                 />
               </div>
 
-              <div className="lg:col-span-3 flex items-center justify-between gap-4">
+              <div className="md:col-span-3 flex items-center justify-between gap-4">
                 {canGoBack && (
                   <button
                     onClick={() => setStep((s) => Math.max(s - 1, 1))}

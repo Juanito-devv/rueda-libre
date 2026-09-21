@@ -1,6 +1,6 @@
 # GuzfalC.A — Alquiler de Vehículos
 
-Sitio web comercial de **GuzfalC.A**, una empresa de alquiler de vehículos por día en Caracas, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
+Sitio web comercial de **GuzfalC.A**, una empresa de alquiler de vehículos por día en Punto Fijo, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
 
 **Sitio:** https://rueda-libre1.vercel.app/
 
@@ -43,8 +43,8 @@ export const SITE = {
   whatsappNumber: '584129706050',          // número con código de país, sin '+'
   whatsappDisplay: '+58 412-9706050',
   email: 'guzfalca1@gmail.com',
-  location: 'Caracas, Venezuela',
-  deliveryCity: 'Caracas, La California',  // se muestra en el mensaje de WhatsApp
+  location: 'Punto Fijo, Venezuela',
+  deliveryCity: 'Punto Fijo',  // se muestra en el mensaje de WhatsApp
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://rueda-libre1.vercel.app',
 };
 ```

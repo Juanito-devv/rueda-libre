@@ -6,9 +6,6 @@ const FUELS = ['Gasolina', 'Diésel', 'Eléctrico', 'Híbrido'];
 
 function validateInput(b) {
   const errors = [];
-  if (b.marca === undefined && b.modelo === undefined && b.categoria === undefined && b.precio_dia === undefined) {
-    errors.push('Envía al menos marca, modelo, categoría o precio');
-  }
   if (b.precio_dia !== undefined && (!Number.isFinite(Number(b.precio_dia)) || Number(b.precio_dia) <= 0)) {
     errors.push('Precio diario inválido');
   }

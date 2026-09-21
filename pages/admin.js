@@ -6,6 +6,7 @@ import ReservasTab from '../src/components/admin/ReservasTab';
 import VehiculosTab from '../src/components/admin/VehiculosTab';
 import CalendarioTab from '../src/components/admin/CalendarioTab';
 import DashboardTab from '../src/components/admin/DashboardTab';
+import PagosTab from '../src/components/admin/PagosTab';
 
 const inputClass = "w-full bg-surface/50 border border-white/10 rounded-xl py-3 px-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md backdrop-blur-sm placeholder:text-on-surface-variant/50";
 
@@ -60,8 +61,8 @@ export default function Admin() {
 
   const tabs = [
     { id: 'reservas', name: 'Reservas', adminOnly: false },
-    { id: 'revision', name: 'Revisión', adminOnly: false },
     { id: 'calendario', name: 'Calendario', adminOnly: false },
+    { id: 'pagos', name: 'Datos de pago', adminOnly: true },
     { id: 'flota', name: 'Flota', adminOnly: true },
     { id: 'dashboard', name: 'Dashboard', adminOnly: true },
   ];
@@ -79,7 +80,7 @@ export default function Admin() {
               Panel de <span className="gradient-text">Gestión</span>
             </h1>
             <p className="text-on-surface-variant text-lg uppercase tracking-widest text-sm">
-              {role === 'admin' ? 'Reservas · Revisión · Calendario · Flota · Dashboard' : 'Reservas · Revisión · Calendario'}
+              {role === 'admin' ? 'Reservas · Calendario · Datos de pago · Flota · Dashboard' : 'Reservas · Calendario'}
             </p>
           </div>
 
@@ -140,8 +141,8 @@ export default function Admin() {
               </div>
 
               {tab === 'reservas' && <ReservasTab token={session.access_token} onRole={(r) => setRole(r)} />}
-              {tab === 'revision' && <ReservasTab token={session.access_token} onRole={(r) => setRole(r)} initialEstado="revision" />}
               {tab === 'calendario' && <CalendarioTab token={session.access_token} onRole={(r) => setRole(r)} />}
+              {tab === 'pagos' && <PagosTab token={session.access_token} isAdmin={role === 'admin'} />}
               {tab === 'flota' && <VehiculosTab token={session.access_token} isAdmin={role === 'admin'} />}
               {tab === 'dashboard' && <DashboardTab token={session.access_token} onRole={(r) => setRole(r)} />}
             </>

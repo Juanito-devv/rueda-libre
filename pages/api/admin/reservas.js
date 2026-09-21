@@ -26,14 +26,28 @@ export default async function handler(req, res) {
 
   if (req.method === 'GET') {
     const q = typeof req.query.q === 'string' ? req.query.q.trim() : '';
+    const vehiculo = typeof req.query.vehiculo === 'string' ? req.query.vehiculo.trim() : '';
+
+    const { data: vehList, error: ve } = await sb.from('vehiculos').select('id_vehiculo, marca, modelo');
+    if (ve) return res.status(500).json({ error: ve.message });
+    const vehicles = (vehList || []).map((v) => ({
+      id: v.id_vehiculo,
+      nombre: `${v.marca} ${v.modelo}`,
+    }));
 
     if (q) {
       const pattern = `%${q}%`;
       const eqs = (query) =>
         query.or(`numero.ilike.${pattern},nombre_cliente.ilike.${pattern},cedula.ilike.${pattern},telefono.ilike.${pattern}`);
 
-      const { data: activas, error: e1 } = await eqs(sb.from('reservas').select('*')).order('creado_en', { ascending: false }).limit(100);
-      const { data: archivadas, error: e2 } = await eqs(sb.from('reservas_historial').select('*')).order('archivado_en', { ascending: false }).limit(100);
+      let aq = sb.from('reservas').select('*');
+      let hq = sb.from('reservas_historial').select('*');
+      if (vehiculo) {
+        aq = aq.eq('vehiculo', vehiculo);
+        hq = hq.eq('vehiculo', vehiculo);
+      }
+      const { data: activas, error: e1 } = await eqs(aq).order('creado_en', { ascending: false }).limit(100);
+      const { data: archivadas, error: e2 } = await eqs(hq).order('archivado_en', { ascending: false }).limit(100);
       if (e1 || e2) return res.status(500).json({ error: e1?.message || e2?.message });
 
       const activasNombre = await attachVehicleNames(activas || []);
@@ -42,20 +56,22 @@ export default async function handler(req, res) {
         ...activasNombre.map((r) => ({ ...r, archivo: false })),
         ...archivadasNombre.map((r) => ({ ...r, archivo: true })),
       ];
-      return res.status(200).json({ reservations, rol, buscando: true });
+      return res.status(200).json({ reservations, vehicles, rol, buscando: true });
     }
 
     const estado = typeof req.query.estado === 'string' ? req.query.estado : 'pendiente';
-    const { data: rows, error: e1 } = await sb
+    let query = sb
       .from('reservas')
       .select('*')
-      .eq('estado', estado)
+      .eq('estado', estado);
+    if (vehiculo) query = query.eq('vehiculo', vehiculo);
+    const { data: rows, error: e1 } = await query
       .order('creado_en', { ascending: true })
       .limit(200);
     if (e1) return res.status(500).json({ error: e1.message });
 
     const list = await attachVehicleNames(rows || []);
-    return res.status(200).json({ reservations: list, rol });
+    return res.status(200).json({ reservations: list, vehicles, rol });
   }
 
   if (req.method === 'POST') {

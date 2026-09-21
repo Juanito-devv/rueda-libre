@@ -74,6 +74,8 @@ export default function ReservasTab({ token, onRole, initialEstado = 'pendiente'
   const [estado, setEstado] = useState(initialEstado);
   const [q, setQ] = useState('');
   const [searchInput, setSearchInput] = useState('');
+  const [vehiculo, setVehiculo] = useState('');
+  const [vehicles, setVehicles] = useState([]);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(0);
@@ -85,6 +87,7 @@ export default function ReservasTab({ token, onRole, initialEstado = 'pendiente'
     const params = new URLSearchParams();
     if (buscando && q.trim()) params.set('q', q.trim());
     else params.set('estado', estado);
+    if (vehiculo) params.set('vehiculo', vehiculo);
     fetch(`/api/admin/reservas?${params.toString()}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -93,11 +96,19 @@ export default function ReservasTab({ token, onRole, initialEstado = 'pendiente'
         if (!on) return;
         if (d.rol) onRole(d.rol);
         setRows(Array.isArray(d.reservations) ? d.reservations : []);
+        if (Array.isArray(d.vehicles)) setVehicles(d.vehicles);
         setLoading(false);
       })
       .catch(() => { if (on) setLoading(false); });
     return () => { on = false; };
-  }, [estado, q, buscando, token, refresh, onRole]);
+  }, [estado, q, buscando, vehiculo, token, refresh, onRole]);
+
+  const selectVehiculo = (id) => {
+    setVehiculo(id);
+    setBuscando(false);
+    setQ('');
+    setSearchInput('');
+  };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -113,9 +124,23 @@ export default function ReservasTab({ token, onRole, initialEstado = 'pendiente'
   };
 
   const name = buscando ? `Resultados para «${q}»` : estado === 'revision' ? 'Revisión post entrega' : estado;
+  const vehiculoNombre = vehicles.find((v) => v.id === vehiculo)?.nombre || '';
 
   return (
     <div>
+      <p className="text-on-surface-variant text-sm mb-4">
+        {buscando
+          ? `Busqueda en reservas activas y archivadas. ${rows.length} resultado(s).`
+          : estado === 'pendiente'
+            ? 'Pendientes ordenadas por fecha de creación (las más antiguas primero). Confirma la reserva cuando valides el pago o comprobante.'
+            : `Mostrando reservas en estado «${name}».`}
+        {vehiculoNombre && ` Vehículo: ${vehiculoNombre}.`}
+        {buscando && (
+          <button onClick={clearSearch} className="text-primary hover:text-white ml-3 uppercase tracking-widest text-xs font-bold">
+            Limpiar búsqueda
+          </button>
+        )}
+      </p>
       <div className="flex flex-wrap gap-3 mb-4 items-center">
         {!buscando &&
           ESTADOS.map((e) => (
@@ -131,6 +156,24 @@ export default function ReservasTab({ token, onRole, initialEstado = 'pendiente'
               {e.name}
             </button>
           ))}
+        <select
+          value={vehiculo}
+          onChange={(e) => selectVehiculo(e.target.value)}
+          className="bg-surface/50 border border-white/10 rounded-full py-2.5 px-4 text-on-surface text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+        >
+          <option value="">Todos los vehículos</option>
+          {vehicles.map((v) => (
+            <option key={v.id} value={v.id}>{v.nombre}</option>
+          ))}
+        </select>
+        {vehiculo && !buscando && (
+          <button
+            onClick={() => selectVehiculo('')}
+            className="px-4 py-2.5 rounded-full border border-white/20 text-on-surface-variant text-xs font-bold tracking-widest hover:text-white transition-colors"
+          >
+            Quitar filtro
+          </button>
+        )}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 ml-auto">
           <input
             type="search"
@@ -155,19 +198,6 @@ export default function ReservasTab({ token, onRole, initialEstado = 'pendiente'
           Descargar resumen
         </button>
       </div>
-
-      <p className="text-on-surface-variant text-sm mb-6">
-        {buscando
-          ? `Busqueda en reservas activas y archivadas. ${rows.length} resultado(s).`
-          : estado === 'pendiente'
-            ? 'Pendientes ordenadas por fecha de creación (las más antiguas primero). Confirma la reserva cuando valides el pago o comprobante.'
-            : `Mostrando reservas en estado «${name}».`}
-        {buscando && (
-          <button onClick={clearSearch} className="text-primary hover:text-white ml-3 uppercase tracking-widest text-xs font-bold">
-            Limpiar búsqueda
-          </button>
-        )}
-      </p>
 
       {loading ? (
         <p className="text-on-surface-variant text-center py-12">Cargando…</p>
