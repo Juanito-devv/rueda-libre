@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { extras } from '../../data/vehicles';
+import { SITE } from '../../config/site';
 import { compressImage } from '../../utils/image';
 
 const inputClass = "w-full bg-surface/50 border border-white/10 rounded-xl py-3 pl-4 pr-5 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none font-body-md backdrop-blur-sm placeholder:text-on-surface-variant/50";
@@ -194,14 +195,14 @@ export default function BookingForm({ booking, onChange, paymentMethods, stepSec
                 <span className="material-symbols-outlined text-primary">person</span>
                 <span className="text-white font-medium">Mayor de 30 años</span>
               </div>
-              <span className="text-primary font-bold">$500</span>
+              <span className="text-primary font-bold">${SITE.guarantees.over30}</span>
             </div>
             <div className="flex items-center justify-between gap-3 p-4 bg-surface/50 border border-white/10 rounded-xl">
               <div className="flex items-center gap-3">
                 <span className="material-symbols-outlined text-accent-orange">person_off</span>
                 <span className="text-white font-medium">Menor de 30 años</span>
               </div>
-              <span className="text-accent-orange font-bold">$1000</span>
+              <span className="text-accent-orange font-bold">${SITE.guarantees.under30}</span>
             </div>
           </div>
         </div>

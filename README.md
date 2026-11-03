@@ -61,11 +61,15 @@ Edita **`src/data/vehicles.js`**:
 - `vehicles[]`: nombre, categoría, tipo, año, transmisión, combustible, capacidad, carga, tarifa diaria (`dailyRate`), imagen, características, segmentos y descripción.
 - `extras[]`: servicios adicionales con su precio por día.
 
-### 3. Garantías y tarifas de ejemplo
+### 3. Garantías, kilometraje y tarifas de ejemplo
 
-- **`src/components/landing/ConditionsSection.jsx`**: garantías por edad y tarifa de ejemplo.
-- **`src/components/booking/BookingForm.jsx`**: el mismo bloque de garantías dentro de la reserva.
-- Mantén las tarifas de ejemplo consistentes con `dailyRate` del catálogo.
+Todo vive en **`src/config/site.js`**:
+
+- `guarantees`: montos de garantía para mayor y menor de 30 años.
+- `mileage`: kilómetros incluidos y precio del km adicional (`null` = "se cobra por separado").
+- `exampleTariffs`: tarifas de ejemplo de la landing. Deben coincidir con `dailyRate` de `src/data/vehicles.js`.
+
+Se muestran en `ConditionsSection.jsx` y `BookingForm.jsx`, que leen de `SITE`.
 
 ### 4. Mensaje de WhatsApp
 

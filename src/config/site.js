@@ -11,4 +11,22 @@ export const SITE = {
   baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://rueda-libre1.vercel.app',
   instagramHandle: 'guzfalc.a',
   instagramUrl: 'https://www.instagram.com/guzfalc.a?stkn=MWRpeHpyYWd1ZDNvMw==',
+
+  // Garantías según edad del conductor (USD)
+  guarantees: {
+    over30: 500,
+    under30: 1000,
+  },
+
+  // Política de kilometraje
+  mileage: {
+    includedKm: 300,
+    extraKmPrice: null, // POR CONFIRMAR (USD por km adicional)
+  },
+
+  // Tarifas de ejemplo de la landing (deben coincidir con src/data/vehicles.js)
+  exampleTariffs: [
+    { label: 'Camioneta Pick-Up 4x4', subtitle: 'Ideal para trabajo pesado', dailyRate: 85, highlight: true },
+    { label: 'SUV Familiar', subtitle: 'Espacio para toda la familia', dailyRate: 65, highlight: false },
+  ],
 };
