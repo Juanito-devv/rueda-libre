@@ -1,6 +1,6 @@
 # GuzfalC.A — Alquiler de Vehículos
 
-Sitio web comercial de **GuzfalC.A**, una empresa de alquiler de vehículos por día en Punto Fijo, Venezuela. El sitio está dirigido a **particulares y empresas** e integra reservas que se coordinan por WhatsApp.
+Sitio web comercial de **GuzfalC.A**, alquiler de vehículos por día en Punto Fijo, Venezuela. Dirigido a particulares y empresas, con reservas, panel administrativo y cierre de coordinación por WhatsApp.
 
 **Sitio:** https://rueda-libre1.vercel.app/
 
@@ -8,19 +8,20 @@ Sitio web comercial de **GuzfalC.A**, una empresa de alquiler de vehículos por 
 
 ## Características
 
-- **Landing page** completa: propuesta de valor, flota destacada, beneficios, sección Starlink, segmentos (particular/empresa), cómo funciona, condiciones y garantías, y CTA final.
-- **Catálogo** con filtros por categoría (Sedanes, SUVs, Camionetas, Vans) y por segmento (Particulares / Empresas). Acepta búsqueda del hero (`?tipo=`, `?desde=`, `?hasta=`).
-- **Reservas** por vehículo (`/booking?id=<id>`): formulario con validación, cálculo automático de días y total (incluye extras), y envío de la reserva a WhatsApp con mensaje formateado.
-- **Extras** configurables (Chofer Corporativo, Entrega a Domicilio, Seguro Extendido, Starlink Premium).
-- **404 personalizado** en español.
-- Export **100% estático** (`output: 'export'`): funciona en cualquier hosting estático.
+- **Landing page** completa: propuesta de valor, flota, beneficios, Starlink, segmentos, cómo funciona, condiciones, garantías y CTA.
+- **Catálogo** con filtros por categoría y segmento; acepta búsqueda desde el hero (`?tipo=`, `?desde=`, `?hasta=`).
+- **Reservas** por vehículo (`/booking?id=<id>`): validación, cálculo de días/total, extras, garantías por edad, factura PDF y envío a WhatsApp.
+- **Disponibilidad** con bloqueo de fechas y margen de 24 h.
+- **Panel admin** (`/admin`): dashboard, reservas en etapas, calendario, vehículos, fotos y pagos.
+- **Reservas en Supabase**, con número de reserva, vencimiento automático y notificaciones opcionales por WhatsApp (API de Meta).
 
 ## Stack
 
-- [Next.js 14](https://nextjs.org/) (pages router) + React 18
+- [Next.js 14](https://nextjs.org/) (Pages Router) + React 18
 - [Tailwind CSS 3](https://tailwindcss.com/)
-- Iconos: Material Symbols Outlined
-- Tipografías: Inter y Montserrat (Google Fonts)
+- [Supabase](https://supabase.com/) (base de datos y autenticación del admin)
+- jsPDF (facturas)
+- Material Symbols Outlined · Inter y Montserrat
 
 ## Empezar
 
@@ -29,92 +30,91 @@ npm install
 npm run dev
 ```
 
-Abre [http://localhost:3000](http://localhost:3000).
+Abre http://localhost:3000.
+
+Crea un `.env.local` (ignorado por git) con las variables de la siguiente sección. Sin las variables de Supabase, las páginas que consultan datos fallarán.
+
+## Variables de entorno
+
+| Variable | Requerida | Uso |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Sí | URL del proyecto Supabase |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Sí | Clave pública (cliente) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Sí (servidor) | API admin y cron. **Nunca** exponerla en el cliente |
+| `NEXT_PUBLIC_SITE_URL` | Recomendada | URL canónica y Open Graph |
+| `CRON_SECRET` | Para cron | Autoriza `POST /api/cron/vencidas` |
+| `WHATSAPP_PHONE_ID` | Opcional | Notificaciones vía API de Meta |
+| `WHATSAPP_TOKEN` | Opcional | Token de la API de Meta |
+| `WHATSAPP_TO` | Opcional | Número que recibe avisos |
+| `NEXT_PUBLIC_BASE_PATH` | No | Solo builds legacy en subcarpeta; no usar en producción |
 
 ## Personalización
 
-### 1. Datos de contacto y empresa (importante)
+### 1. Datos de contacto y empresa
 
-Edita **`src/config/site.js`**: es la fuente única de número de WhatsApp, correo, ciudad de entrega y URL del sitio. Todos los botones y el footer leen de aquí.
-
-```js
-export const SITE = {
-  name: 'GuzfalC.A',
-  whatsappNumber: '584129706050',          // número con código de país, sin '+'
-  whatsappDisplay: '+58 412-9706050',
-  email: 'guzfalca1@gmail.com',
-  location: 'Punto Fijo, Venezuela',
-  deliveryCity: 'Punto Fijo',  // se muestra en el mensaje de WhatsApp
-  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://rueda-libre1.vercel.app',
-};
-```
-
-> `NEXT_PUBLIC_SITE_URL` se usa para las etiquetas Open Graph (`og:image`). Si cambias de dominio, define esta variable en el hosting.
+Edita **`src/config/site.js`**: fuente única de nombre, WhatsApp, correo, ubicación, ciudad de entrega, Instagram y URL base. Header, footer, CTAs y mensajes leen de aquí.
 
 ### 2. Flota, precios y extras
 
 Edita **`src/data/vehicles.js`**:
 
-- `vehicles[]`: nombre, categoría, tipo, año, transmisión, combustible, capacidad, carga, tarifa diaria (`dailyRate`), imagen (relativa a `public/images/vehicles/`), características, segmentos y descripción.
+- `vehicles[]`: nombre, categoría, tipo, año, transmisión, combustible, capacidad, carga, tarifa diaria (`dailyRate`), imagen, características, segmentos y descripción.
 - `extras[]`: servicios adicionales con su precio por día.
 
 ### 3. Garantías y tarifas de ejemplo
 
-- En **`src/components/landing/ConditionsSection.jsx`** se muestran las garantías por edad y tarifas de ejemplo. **Mantén las tarifas consistentes con `dailyRate` del catálogo.**
-- El mismo bloque de garantías se repite en el formulario de reserva (**`src/components/booking/BookingForm.jsx`**).
+- **`src/components/landing/ConditionsSection.jsx`**: garantías por edad y tarifa de ejemplo.
+- **`src/components/booking/BookingForm.jsx`**: el mismo bloque de garantías dentro de la reserva.
+- Mantén las tarifas de ejemplo consistentes con `dailyRate` del catálogo.
 
 ### 4. Mensaje de WhatsApp
 
-Edita **`src/utils/whatsapp.js`**: formato del mensaje (`generateWhatsAppMessage`) y construcción del enlace `wa.me` (`getWhatsAppUrl`). Los extras se resuelven automáticamente desde `extras[]` (no repetir nombres a mano).
+**`src/utils/whatsapp.js`**: formato del mensaje y enlace `wa.me`. Los extras se resuelven desde `extras[]`.
+
+### 5. Base de datos
+
+El esquema y las funciones de Supabase están en **`migracion-v25.sql`**. Ejecútalo en el SQL Editor del proyecto antes de usar reservas, calendario o admin.
 
 ## Build y despliegue
 
-El proyecto genera una salida estática.
-
 ```bash
 npm run build
+npm start
 ```
 
-La salida queda en `out/` (y también `.next/`). Este proyecto está pensado para **Vercel en la raíz** (dominio propio), que es como está publicado el demo:
+El proyecto **no** es export estático: incluye API routes (`/api/...`) para Supabase, admin y cron. Debe desplegarse en un hosting con Node (Vercel).
 
 1. Importa el repositorio en [Vercel](https://vercel.com).
-2. Framework preset: **Next.js**. El comando de build (`next build`) y la salida se detectan automáticamente.
-3. Opcional: define `NEXT_PUBLIC_SITE_URL` con tu dominio de producción.
+2. Framework preset: **Next.js**.
+3. Define las variables de entorno del apartado anterior (Preview y Production).
+4. Conecta el dominio propio y actualiza `NEXT_PUBLIC_SITE_URL`.
 
-### Despliegue en GitHub Pages (subruta)
-
-Si prefieres GitHub Pages en `/rueda-libre`:
-
-```bash
-NEXT_PUBLIC_BASE_PATH=/rueda-libre npm run build
-```
-
-Copia el contenido de `out/` a la rama de publicación (o al repo de páginas) y añade un archivo `.nojekyll`.
+`vercel.json` está vacío a propósito. GitHub Pages ya no se usa: no se comitean artefactos de build (`_next/`, `*.html` de la raíz, `images/`, `.nojekyll`).
 
 ## Estructura
 
 ```
 pages/
-  index.js        → landing page
-  catalog.js      → catálogo con filtros
-  booking.js      → reserva por vehículo (?id=)
-  404.js          → página no encontrada
+  index.js / catalog.js / booking.js / 404.js / admin.js
+  api/                  reservas, disponibilidad, admin/*, cron/*
 src/
-  config/site.js      → datos de contacto y empresa
-  data/vehicles.js    → flota y extras
-  utils/whatsapp.js   → mensaje y enlace de WhatsApp
+  config/site.js        datos de contacto y empresa
+  data/vehicles.js      flota y extras
+  lib/                  Supabase, sesión admin, vehículos
+  utils/                whatsapp, invoice, currency, disponibilidad, notify
   components/
-    layout/           → Header, Footer, WhatsAppButton
-    landing/          → secciones de la portada
-    booking/          → BookingForm, BookingSummary
-  styles/globals.css  → estilos globales y utilidades
+    layout/             Header, Footer, WhatsAppButton
+    landing/            secciones de la portada
+    booking/            BookingForm, BookingSummary
+    admin/              Dashboard, Reservas, Calendario, Vehículos, Pagos
+  styles/globals.css
 public/
-  images/vehicles/    → fotos de los vehículos
+  images/vehicles/      fotos de los vehículos
   favicon.svg
 ```
 
 ## Notas técnicas
 
-- Las rutas de las imágenes son relativas (`images/vehicles/...`) para funcionar tanto en la raíz como en subrutas con `NEXT_PUBLIC_BASE_PATH`.
-- `next.config.js` ignora ESLint en builds (`eslint.ignoreDuringBuilds`) y usa `output: 'export'` con imágenes sin optimizar (export estático).
-- La reserva no almacena datos en servidor: genera el mensaje y abre WhatsApp. Así no se requiere backend.
+- Las rutas de imágenes son relativas (`images/vehicles/...`) para funcionar en la raíz o en subrutas.
+- `next.config.js` ignora ESLint en builds (`eslint.ignoreDuringBuilds`) y desactiva la optimización de imágenes.
+- Las reservas sí se guardan en Supabase; WhatsApp se usa para coordinar la entrega.

@@ -17,6 +17,15 @@
 /.next/
 /out/
 
+# artefactos de export estatico (no comitear en la raiz)
+/_next/
+/index.html
+/catalog.html
+/booking.html
+/404.html
+/images/
+/.nojekyll
+
 # production
 /build
 
