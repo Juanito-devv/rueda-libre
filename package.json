@@ -12,7 +12,7 @@
     "next.js",
     "tailwindcss"
   ],
-  "homepage": "https://rueda-libre1.vercel.app",
+  "homepage": "https://www.guzfalca.com",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

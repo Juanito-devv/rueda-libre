@@ -8,7 +8,7 @@ export const SITE = {
   email: 'guzfalca1@gmail.com',
   location: 'Punto Fijo, Venezuela',
   deliveryCity: 'Punto Fijo',
-  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://rueda-libre1.vercel.app',
+  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.guzfalca.com',
   instagramHandle: 'guzfalc.a',
   instagramUrl: 'https://www.instagram.com/guzfalc.a?stkn=MWRpeHpyYWd1ZDNvMw==',
 

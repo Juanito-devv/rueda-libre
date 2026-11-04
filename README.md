@@ -2,7 +2,7 @@
 
 Sitio web comercial de **GuzfalC.A**, alquiler de vehículos por día en Punto Fijo, Venezuela. Dirigido a particulares y empresas, con reservas, panel administrativo y cierre de coordinación por WhatsApp.
 
-**Sitio:** https://rueda-libre1.vercel.app/
+**Sitio:** https://www.guzfalca.com/
 
 ---
 
