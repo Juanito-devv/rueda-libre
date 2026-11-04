@@ -41,7 +41,7 @@ Crea un `.env.local` (ignorado por git) con las variables de la siguiente secci�
 | `NEXT_PUBLIC_SUPABASE_URL` | Sí | URL del proyecto Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Sí | Clave pública (cliente) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Sí (servidor) | API admin y cron. **Nunca** exponerla en el cliente |
-| `NEXT_PUBLIC_SITE_URL` | Recomendada | URL canónica y Open Graph |
+| `NEXT_PUBLIC_SITE_URL` | No | **Obsoleta**: el dominio se define en `src/config/site.js` (`baseUrl`) |
 | `CRON_SECRET` | Para cron | Autoriza `POST /api/cron/vencidas` |
 | `WHATSAPP_PHONE_ID` | Opcional | Notificaciones vía API de Meta |
 | `WHATSAPP_TOKEN` | Opcional | Token de la API de Meta |
@@ -91,7 +91,7 @@ El proyecto **no** es export estático: incluye API routes (`/api/...`) para Sup
 1. Importa el repositorio en [Vercel](https://vercel.com).
 2. Framework preset: **Next.js**.
 3. Define las variables de entorno del apartado anterior (Preview y Production).
-4. Conecta el dominio propio y actualiza `NEXT_PUBLIC_SITE_URL`.
+4. Conecta el dominio propio y ajusta `baseUrl` en `src/config/site.js` si cambia.
 
 `vercel.json` está vacío a propósito. GitHub Pages ya no se usa: no se comitean artefactos de build (`_next/`, `*.html` de la raíz, `images/`, `.nojekyll`).
 

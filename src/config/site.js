@@ -8,7 +8,8 @@ export const SITE = {
   email: 'guzfalca1@gmail.com',
   location: 'Punto Fijo, Venezuela',
   deliveryCity: 'Punto Fijo',
-  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.guzfalca.com',
+  // Dominio público de producción. Si el dominio cambia, se edita solo esta línea.
+  baseUrl: 'https://www.guzfalca.com',
   instagramHandle: 'guzfalc.a',
   instagramUrl: 'https://www.instagram.com/guzfalc.a?stkn=MWRpeHpyYWd1ZDNvMw==',
 

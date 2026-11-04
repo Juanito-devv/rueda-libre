@@ -35,8 +35,8 @@ Recomendaciones al comprar: activar renovación automática, bloqueo de transfer
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
   - `SUPABASE_SERVICE_ROLE_KEY`
   - `CRON_SECRET`
-  - `NEXT_PUBLIC_SITE_URL` (se define el día del lanzamiento)
   - Opcionales: `WHATSAPP_PHONE_ID`, `WHATSAPP_TOKEN`, `WHATSAPP_TO`
+  - `NEXT_PUBLIC_SITE_URL` **ya no se usa**: el dominio vive en `src/config/site.js` (`baseUrl`). Si existe en Vercel, se puede borrar.
 - [ ] Ejecutar `migracion-v25.sql` en Supabase → SQL Editor.
 - [ ] Crear el usuario admin en Supabase Auth y su fila en `perfiles` con rol.
 - [ ] Probar en `rueda-libre1.vercel.app`: landing, `/catalog`, `/booking`, `/admin`, PDF y WhatsApp.
@@ -60,9 +60,8 @@ Recomendaciones al comprar: activar renovación automática, bloqueo de transfer
 
 4. Esperar propagación (normalmente menos de 1 hora; hasta 48 h).
 5. Verificar: candado HTTPS, `www` redirige al dominio principal, y cargar `/`, `/catalog`, `/booking`, `/admin` recargando directo.
-6. Vercel → **Settings → Environment Variables**:
-   `NEXT_PUBLIC_SITE_URL=https://guzfalca.com` (Production) → **Redeploy**.
-   Esto corrige las etiquetas Open Graph; no cambia rutas ni reservas.
+6. Verificar que el HTML servido tenga `og:image` con `https://www.guzfalca.com`
+   (el dominio se define en `src/config/site.js` → `baseUrl`).
 
 ## Rollback (si algo sale mal)
 
@@ -74,7 +73,7 @@ Recomendaciones al comprar: activar renovación automática, bloqueo de transfer
 
 - Comprar el dominio no toca el repositorio ni Supabase.
 - El DNS solo decide a dónde apunta el nombre; se puede revertir.
-- `NEXT_PUBLIC_SITE_URL` solo afecta metadatos (OG/canonical), no la lógica.
+- `SITE.baseUrl` solo afecta metadatos (OG/canonical) y el pie de las facturas, no la lógica.
 - Las reservas viven en Supabase; el dominio no interviene.
 
 ## Después del lanzamiento
