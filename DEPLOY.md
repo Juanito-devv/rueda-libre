@@ -15,6 +15,19 @@ Guía del lanzamiento. **Comprar el dominio no modifica el código ni la base de
 
 El sitio actual (`https://rueda-libre1.vercel.app`) sigue funcionando siempre. El dominio propio se agrega como alias.
 
+## ¿Puedo comprar el dominio antes de tener la data?
+
+Sí. Comprar el dominio **no publica ni cambia la web**. Hay dos caminos válidos:
+
+- **Comprarlo y dejar el DNS quieto:** el nombre queda asegurado y la web sigue en `rueda-libre1.vercel.app`.
+- **Comprarlo y apuntarlo a Vercel el mismo día:** la web pasa a verse en `guzfalca.com` con el contenido actual; los datos se actualizan después con `git push`.
+
+No se "sube" nada a Spaceship. El código ya está en Vercel y se actualiza con cada push. Spaceship solo guarda el dominio y el DNS.
+
+Cosas que **no** hacen falta al comprar: hosting, email, website builder ni transferir el dominio a Vercel. Si Spaceship los ofrece como extra, se pueden omitir.
+
+Recomendaciones al comprar: activar renovación automática, bloqueo de transferencia y verificación en dos pasos.
+
 ## Antes del día del lanzamiento
 
 - [ ] Variables de entorno en Vercel (Production y Preview):
