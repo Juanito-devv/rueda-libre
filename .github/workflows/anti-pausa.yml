@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Consultar disponibilidad (mantiene la base de datos despierta)
-        run: curl -fsS -m 30 -o /dev/null https://rueda-libre1.vercel.app/api/disponibilidad || curl -fsS -m 30 -o /dev/null https://njvxxqfiqlvphthlaqcd.supabase.co/auth/v1/health
+        run: curl -fsS -m 30 -o /dev/null https://www.guzfalca.com/api/disponibilidad || curl -fsS -m 30 -o /dev/null https://njvxxqfiqlvphthlaqcd.supabase.co/auth/v1/health
