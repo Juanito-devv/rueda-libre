@@ -15,6 +15,7 @@ export default function Admin() {
   const [role, setRole] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState('reservas');
@@ -96,14 +97,28 @@ export default function Admin() {
                   placeholder="Correo del personal"
                   required
                 />
-                <input
-                  type="password"
-                  className={inputClass}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Contraseña"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    className={`${inputClass} !pr-12`}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Contraseña"
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-on-surface-variant hover:text-white transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-xl leading-none block">
+                      {showPassword ? 'visibility_off' : 'visibility'}
+                    </span>
+                  </button>
+                </div>
                 {error && <p className="text-error text-sm">{error}</p>}
                 <button
                   type="submit"
